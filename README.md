@@ -1,5 +1,5 @@
 # PIC16F676MPPT
-Solar MPPT circuit by 16F676. It doesn't tested yet.
+Solar MPPT circuit by 16F676. It did tested and work good.
 
 This is simple MPPT for solar panel. PWM driven by software.
 
