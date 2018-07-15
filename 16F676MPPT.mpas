@@ -111,6 +111,8 @@ begin
      {$ifdef Write_OPAMP_DIFF}
      if Write_OPAMP=0 then begin
        Delay_100ms;
+       Delay_100ms;
+       Delay_100ms;
        adc_cur:=ADC_Read(0);
        EEPROM_Write(0, Lo(adc_cur));
      end;
