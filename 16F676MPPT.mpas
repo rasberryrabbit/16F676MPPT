@@ -206,8 +206,8 @@ begin
        adc_vol:=adc_vol div adc_max_loop;
        adc_cur:=adc_cur div adc_max_loop;
        // sub op-amp offset value
-       if adc_cur>LM358_diff then
-         adc_cur:=adc_cur-LM358_diff
+       if adc_cur>word(LM358_diff) then
+         adc_cur:=adc_cur-word(LM358_diff)
          else
            adc_cur:=0;
        //

@@ -303,21 +303,29 @@ L__main29:
 L__main32:
 ;16F676MPPT.mpas,206 :: 		adc_vol:=adc_vol div adc_max_loop;
 ;16F676MPPT.mpas,207 :: 		adc_cur:=adc_cur div adc_max_loop;
-;16F676MPPT.mpas,209 :: 		if adc_cur>LM358_diff then
+;16F676MPPT.mpas,209 :: 		if adc_cur>word(LM358_diff) then
+	MOVF       _LM358_diff+0, 0
+	MOVWF      R1+0
+	CLRF       R1+1
 	MOVF       _adc_cur+1, 0
-	SUBLW      0
+	SUBWF      R1+1, 0
 	BTFSS      STATUS+0, 2
 	GOTO       L__main84
 	MOVF       _adc_cur+0, 0
-	SUBWF      _LM358_diff+0, 0
+	SUBWF      R1+0, 0
 L__main84:
 	BTFSC      STATUS+0, 0
 	GOTO       L__main34
-;16F676MPPT.mpas,210 :: 		adc_cur:=adc_cur-LM358_diff
+;16F676MPPT.mpas,210 :: 		adc_cur:=adc_cur-word(LM358_diff)
 	MOVF       _LM358_diff+0, 0
+	MOVWF      R0+0
+	CLRF       R0+1
+	MOVF       R0+0, 0
 	SUBWF      _adc_cur+0, 1
 	BTFSS      STATUS+0, 0
 	DECF       _adc_cur+1, 1
+	MOVF       R0+1, 0
+	SUBWF      _adc_cur+1, 1
 	GOTO       L__main35
 ;16F676MPPT.mpas,211 :: 		else
 L__main34:
