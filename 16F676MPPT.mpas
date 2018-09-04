@@ -179,7 +179,7 @@ begin
              Inc_pwm:=Inc_Pwm_Max;
              flag_inc:=True;
              vol2:=0;
-             lo_PWM:=0;
+             lo_PWM:=PWM_LOW;
              hi_PWM:=PWM_MAX;
              Delay_1ms;
              continue;
@@ -273,7 +273,7 @@ begin
          Inc_pwm:=Inc_Pwm_Max;
          flag_inc:=True;
          vol2:=0;
-         lo_PWM:=0;
+         lo_PWM:=PWM_LOW;
          hi_PWM:=PWM_MAX;
        end;
        // PWM

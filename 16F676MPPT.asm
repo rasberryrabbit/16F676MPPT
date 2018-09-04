@@ -679,8 +679,9 @@ L__main37:
 	MOVWF      _flag_inc+0
 ;16F676MPPT.mpas,275 :: 		vol2:=0;
 	CLRF       _vol2+0
-;16F676MPPT.mpas,276 :: 		lo_PWM:=0;
-	CLRF       _lo_PWM+0
+;16F676MPPT.mpas,276 :: 		lo_PWM:=PWM_LOW;
+	MOVLW      1
+	MOVWF      _lo_PWM+0
 ;16F676MPPT.mpas,277 :: 		hi_PWM:=PWM_MAX;
 	MOVLW      255
 	MOVWF      _hi_PWM+0
