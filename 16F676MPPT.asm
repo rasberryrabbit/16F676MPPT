@@ -182,10 +182,10 @@ L__main9:
 ;16F676MPPT.mpas,148 :: 		TMR1ON_bit:=1;
 	BSF        TMR1ON_bit+0, BitPos(TMR1ON_bit+0)
 ;16F676MPPT.mpas,150 :: 		VOL_PWM:=PWM_LOW;
-	MOVLW      1
+	MOVLW      3
 	MOVWF      _VOL_PWM+0
 ;16F676MPPT.mpas,151 :: 		lo_PWM:=PWM_LOW;
-	MOVLW      1
+	MOVLW      3
 	MOVWF      _lo_PWM+0
 ;16F676MPPT.mpas,152 :: 		hi_PWM:=PWM_MAX;
 	MOVLW      255
@@ -521,12 +521,12 @@ L__main89:
 	GOTO       L__main62
 ;16F676MPPT.mpas,245 :: 		else if Lo(wPWM)<PWM_LOW then
 L__main61:
-	MOVLW      1
+	MOVLW      3
 	SUBWF      _wPWM+0, 0
 	BTFSC      STATUS+0, 0
 	GOTO       L__main64
 ;16F676MPPT.mpas,246 :: 		wPWM:=word(PWM_LOW);
-	MOVLW      1
+	MOVLW      3
 	MOVWF      _wPWM+0
 	MOVLW      0
 	MOVWF      _wPWM+1
@@ -596,7 +596,7 @@ L__main67:
 	MOVF       _wPWM+0, 0
 	MOVWF      _hi_PWM+0
 ;16F676MPPT.mpas,258 :: 		wPWM:=(word(VOL_PWM-PWM_LOW)+((PWMLO_DIV+1) div 2)) div PWMLO_DIV;
-	MOVLW      1
+	MOVLW      3
 	SUBWF      _VOL_PWM+0, 0
 	MOVWF      R0+0
 	MOVLW      0
@@ -633,7 +633,7 @@ L__main67:
 	BTFSC      STATUS+0, 2
 	MOVLW      0
 	MOVWF      R1+0
-	MOVLW      1
+	MOVLW      3
 	SUBWF      _wPWM+0, 0
 	MOVLW      255
 	BTFSC      STATUS+0, 0
@@ -644,7 +644,7 @@ L__main67:
 	BTFSC      STATUS+0, 2
 	GOTO       L__main70
 ;16F676MPPT.mpas,261 :: 		wPWM:=PWM_LOW;
-	MOVLW      1
+	MOVLW      3
 	MOVWF      _wPWM+0
 	CLRF       _wPWM+1
 L__main70:
@@ -680,7 +680,7 @@ L__main37:
 ;16F676MPPT.mpas,275 :: 		vol2:=0;
 	CLRF       _vol2+0
 ;16F676MPPT.mpas,276 :: 		lo_PWM:=PWM_LOW;
-	MOVLW      1
+	MOVLW      3
 	MOVWF      _lo_PWM+0
 ;16F676MPPT.mpas,277 :: 		hi_PWM:=PWM_MAX;
 	MOVLW      255
