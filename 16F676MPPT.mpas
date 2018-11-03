@@ -50,10 +50,10 @@ var
    PWM_TICK, ON_PWM, VOL_PWM:byte;
    TICK_1000:Byte;
    LED1_tm:byte;
-   adc_vol, adc_cur, offset_cur, adc_prev, adc_diff : word;
+   adc_vol, adc_cur, vol_prev, cur_prev, adc_diff : word;
    power_prev, power_curr, power_diff : dword;
    i, LM358_diff:byte;
-   flag_inc, got_max :boolean;
+   flag_inc, p_equal :boolean;
    Inc_pwm, eq_cnt : byte;
    vol1, vol2, lo_PWM, hi_PWM : byte;
    Write_OPAMP : sbit at RC3_bit;
@@ -122,6 +122,7 @@ begin
      Delay_100ms;
      LM358_diff:=EEPROM_Read(0);
      {$endif}
+     Inc(LM358_diff);
      
      IncPWM_EQ:=0;
      IncPWM_EQ:=EEPROM_Read(3);
@@ -151,7 +152,10 @@ begin
      lo_PWM:=PWM_LOW;
      hi_PWM:=PWM_MAX;
      flag_inc:=True;
-     adc_prev:=0;
+     p_equal:=False;
+     cur_prev:=0;
+     vol_prev:=0;
+     
 
      while True do begin
        // LED
@@ -195,7 +199,8 @@ begin
              LED1_tm:=120;
        // save previous adc values
        power_prev:=power_curr;
-       adc_prev:=adc_cur;
+       cur_prev:=adc_cur;
+       vol_prev:=adc_vol;
        // read adc value
        adc_vol:=0;
        adc_cur:=0;
@@ -205,30 +210,38 @@ begin
        end;
        adc_vol:=adc_vol div adc_max_loop;
        adc_cur:=adc_cur div adc_max_loop;
-       // sub op-amp offset value
-       if adc_cur>word(LM358_diff) then
-         adc_cur:=adc_cur-word(LM358_diff)
-         else
-           adc_cur:=0;
        //
-       if (adc_cur>0) then begin
-         if lo_PWM=0 then
-           lo_PWM:=VOL_PWM;
+       if adc_cur>LM358_diff then begin
          power_curr:= adc_cur * adc_vol;
          if power_curr=power_prev then begin
-           Inc_pwm:=0;
-           if adc_cur>adc_prev then begin
-             flag_inc:=False;
-           end else
-           if adc_cur<adc_prev then begin
-             flag_inc:=True;
-           end else begin
-             flag_inc:=not flag_inc;
-           end;
-           vol2:=0;
            LED1_tm:=240;
-           continue;
+           vol2:=0;
+           Inc_pwm:=1;
+           // get high voltage
+           if (not p_equal) or (adc_cur=cur_prev) then begin
+             if adc_vol<vol_prev then
+               flag_inc:=True
+               else if adc_vol>vol_prev then
+                 flag_inc:=False
+                 else if adc_cur=cur_prev then begin
+                   p_equal:=True;
+                   continue;
+                 end;
+           end;
+           // get low current
+           if p_equal or (adc_vol=vol_prev) then begin
+             if adc_cur<cur_prev then
+               flag_inc:=True
+               else if adc_cur>cur_prev then
+                 flag_inc:=False
+                 else if adc_vol=vol_prev then begin
+                   p_equal:=True;
+                   continue;
+                 end;
+           end;
+           p_equal:=True;
          end else begin
+           p_equal:=False;
            if Inc_pwm<Inc_Pwm_Max then
              Inc(Inc_pwm);
            if power_curr<power_prev then begin
@@ -237,7 +250,7 @@ begin
              flag_inc:=not flag_inc;
              { if set last low and high PWM, make average }
              if vol2<>0 then begin
-               Inc_pwm:=0;
+               Inc_pwm:=1;
                wPWM:=vol1;
                wPWM:=(wPWM+vol2+1) div 2+3; { >=3 }
                if (Hi(wPWM)<>0) or (Lo(wPWM)>PWM_MAX) then
@@ -273,20 +286,27 @@ begin
          Inc_pwm:=Inc_Pwm_Max;
          flag_inc:=True;
          vol2:=0;
+         adc_cur:=0;
+         adc_vol:=0;
          lo_PWM:=PWM_LOW;
          hi_PWM:=PWM_MAX;
+         p_equal:=False;
        end;
        // PWM
        if flag_inc then begin
          if VOL_PWM<(hi_PWM-Inc_pwm) then begin
            VOL_PWM:=VOL_PWM+Inc_pwm;
-         end else
+         end else begin
              VOL_PWM:=hi_PWM;
+             flag_inc:=False;
+         end;
        end else begin
-         if VOL_PWM>(lo_PWM+(Inc_Pwm_Max+1-Inc_pwm)) then begin
+         if (VOL_PWM-lo_PWM)>(Inc_Pwm_Max+1-Inc_pwm) then begin
            VOL_PWM:=VOL_PWM-(Inc_Pwm_Max+1-Inc_pwm);
-         end else
+         end else begin
              VOL_PWM:=lo_PWM;
+             flag_inc:=True;
+         end;
        end;
      end;
 end.

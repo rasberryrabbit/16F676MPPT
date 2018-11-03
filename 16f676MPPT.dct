@@ -41,7 +41,6 @@ adc_get_sample
 adc_get_sample_ptr
 adc_init
 adc_max_loop
-adc_prev
 adc_read
 adc_vol
 adcon0
@@ -146,6 +145,7 @@ cose3
 cosh
 cout
 cout_bit
+cur_prev
 dbl_mant_dig
 dbl_max
 dc
@@ -222,7 +222,6 @@ go_done
 go_done_bit
 go_not_done
 go_not_done_bit
-got_max
 half_pi
 halfbits
 hh
@@ -359,13 +358,13 @@ not_to
 not_to_bit
 nrm3232
 nrm4032
-offset_cur
 on_pwm
 option_reg
 osccal
 ow_read
 ow_reset
 ow_write
+p_equal
 pcl
 pclath
 pcon
@@ -590,6 +589,7 @@ vcfg
 vcfg_bit
 vdelay_advanced_ms
 vdelay_ms
+vol_prev
 vol_pwm
 vol1
 vol2
