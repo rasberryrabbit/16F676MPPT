@@ -232,7 +232,7 @@ begin
                    p_equal:=True;
                    continue;
                  end;
-             if adc_cur=cur_prev then
+             if p_equal and (adc_cur=cur_prev) then
                 flag_inc:=not flag_inc;
            end;
            // get low current
@@ -245,7 +245,7 @@ begin
                    p_equal:=True;
                    continue;
                  end;
-             if adc_vol=vol_prev then
+             if (not p_equal) and (adc_vol=vol_prev) then
                flag_inc:=not flag_inc;
            end;
            p_equal:=True;

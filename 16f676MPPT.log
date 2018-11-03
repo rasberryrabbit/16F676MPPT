@@ -7,8 +7,8 @@ hint: 337	1010	Hint: Unit "16F676MPPT.mpas" has been recompiled	16F676MPPT.mpas
 diagnostics: 0	134	Compiled Successfully	F:\mikroPascal PRO for PIC\works\16f676MPPT\16F676MPPT.mpas
 diagnostics: 0	139	All files Compiled in 15 ms	 
 hint: 0	1144	Used RAM (bytes): 37 (77%)  Free RAM (bytes): 11 (23%)	Used RAM (bytes): 37 (77%)  Free RAM (bytes): 11 (23%)
-hint: 0	1144	Used ROM (program words): 613 (60%)  Free ROM (program words): 411 (40%)	Used ROM (program words): 613 (60%)  Free ROM (program words): 411 (40%)
+hint: 0	1144	Used ROM (program words): 627 (61%)  Free ROM (program words): 397 (39%)	Used ROM (program words): 627 (61%)  Free ROM (program words): 397 (39%)
 diagnostics: 0	145	Project Linked Successfully	16f676MPPT.mpppi
 diagnostics: 0	140	Linked in 16 ms	 
-diagnostics: 0	141	Project '16f676MPPT.mpppi' completed: 63 ms	 
-diagnostics: 0	103	Finished successfully: 03 11 2018, 17:05:10	16f676MPPT.mpppi
+diagnostics: 0	141	Project '16f676MPPT.mpppi' completed: 47 ms	 
+diagnostics: 0	103	Finished successfully: 03 11 2018, 17:22:32	16f676MPPT.mpppi

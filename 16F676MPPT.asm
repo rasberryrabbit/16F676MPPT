@@ -453,7 +453,7 @@ L__main89:
 L__main49:
 L__main47:
 L__main44:
-;16F676MPPT.mpas,235 :: 		if adc_cur=cur_prev then
+;16F676MPPT.mpas,235 :: 		if p_equal and (adc_cur=cur_prev) then
 	MOVF       _adc_cur+1, 0
 	XORWF      _cur_prev+1, 0
 	BTFSS      STATUS+0, 2
@@ -461,7 +461,13 @@ L__main44:
 	MOVF       _cur_prev+0, 0
 	XORWF      _adc_cur+0, 0
 L__main90:
+	MOVLW      255
 	BTFSS      STATUS+0, 2
+	MOVLW      0
+	MOVWF      R0+0
+	MOVF       _p_equal+0, 0
+	ANDWF      R0+0, 1
+	BTFSC      STATUS+0, 2
 	GOTO       L__main52
 ;16F676MPPT.mpas,236 :: 		flag_inc:=not flag_inc;
 	COMF       _flag_inc+0, 1
@@ -532,7 +538,9 @@ L__main94:
 L__main64:
 L__main62:
 L__main59:
-;16F676MPPT.mpas,248 :: 		if adc_vol=vol_prev then
+;16F676MPPT.mpas,248 :: 		if (not p_equal) and (adc_vol=vol_prev) then
+	COMF       _p_equal+0, 0
+	MOVWF      R1+0
 	MOVF       _adc_vol+1, 0
 	XORWF      _vol_prev+1, 0
 	BTFSS      STATUS+0, 2
@@ -540,7 +548,13 @@ L__main59:
 	MOVF       _vol_prev+0, 0
 	XORWF      _adc_vol+0, 0
 L__main95:
+	MOVLW      255
 	BTFSS      STATUS+0, 2
+	MOVLW      0
+	MOVWF      R0+0
+	MOVF       R1+0, 0
+	ANDWF      R0+0, 1
+	BTFSC      STATUS+0, 2
 	GOTO       L__main67
 ;16F676MPPT.mpas,249 :: 		flag_inc:=not flag_inc;
 	COMF       _flag_inc+0, 1
