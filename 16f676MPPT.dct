@@ -36,7 +36,6 @@ _lcd_underline_on
 abs
 acos
 adc_cur
-adc_diff
 adc_get_sample
 adc_get_sample_ptr
 adc_init
@@ -193,7 +192,6 @@ eeif
 eeif_bit
 eeprom_read
 eeprom_write
-eq_cnt
 equals_double
 eval_poly
 excess
@@ -231,7 +229,6 @@ ics_auto
 ics_off
 inc_pwm
 inc_pwm_max
-incpwm_eq
 indf
 int2double
 intcon
@@ -377,7 +374,6 @@ porta
 portc
 pow
 power_curr
-power_diff
 power_prev
 ps0
 ps0_bit
@@ -390,8 +386,8 @@ ps2_key_read
 psa
 psa_bit
 pwm_flag
-pwm_low
 pwm_max
+pwm_min
 pwm_sig
 pwm_tick
 pwmhi_div
@@ -593,6 +589,7 @@ vol_prev
 vol_pwm
 vol1
 vol2
+volmul
 vr0
 vr0_bit
 vr1

@@ -6,5 +6,4 @@ main
 	EEPROM_Write
 	EEPROM_Read
 	Mul_32x32_U
-	Div_16x16_U
 Interrupt
