@@ -63,7 +63,7 @@ var
    i, LM358_diff : byte;
    flag_inc, p_equal : boolean;
    Inc_pwm : byte;
-   vol1, vol2, lo_PWM, hi_PWM : byte;
+   vol1, vol2, lo_PWM, hi_PWM, pwm_power, pequal_cnt : byte;
    wPWM, wTemp : word;
    Reset_Tick100 : Byte;
    Reset_Tick : word;
@@ -158,6 +158,10 @@ begin
      p_equal:=False;
      cur_prev:=0;
      vol_prev:=0;
+     {$ifndef USE_OLD_METHOD}
+     pwm_power:=PWM_MAX;
+     pequal_cnt:=0;
+     {$endif}
      
 
      while True do begin
@@ -227,11 +231,7 @@ begin
              if adc_vol<vol_prev then
                flag_inc:=True
                else if adc_vol>vol_prev then
-                 flag_inc:=False
-                 else if adc_cur=cur_prev then begin
-                   p_equal:=True;
-                   continue;
-                 end;
+                 flag_inc:=False;
              if p_equal and (adc_cur=cur_prev) then
                 flag_inc:=not flag_inc;
            end;
@@ -240,11 +240,7 @@ begin
              if adc_cur<cur_prev then
                flag_inc:=False
                else if adc_cur>cur_prev then
-                 flag_inc:=True
-                 else if adc_vol=vol_prev then begin
-                   p_equal:=True;
-                   continue;
-                 end;
+                 flag_inc:=True;
              if (not p_equal) and (adc_vol=vol_prev) then
                flag_inc:=not flag_inc;
            end;
@@ -254,10 +250,8 @@ begin
            {$ifdef USE_OLD_METHOD}
            if Inc_pwm<Inc_Pwm_Max then
              Inc(Inc_pwm);
-           {$endif}
            if power_curr<power_prev then begin
              flag_inc:=not flag_inc;
-             {$ifdef USE_OLD_METHOD}
              { vol1 = last low PWM }
              vol1:=VOL_PWM;
              { if set last low and high PWM, make average }
@@ -287,11 +281,20 @@ begin
                lo_PWM:=lo(wPWM);
                continue;
              end;
-             {$endif}
            end else begin
              { last high PWM }
              vol2:=VOL_PWM;
            end;
+           {$else}
+           if power_curr < power_prev then
+             flag_inc := not flag_inc
+             else begin
+               if pequal_cnt < 255 then
+                 Inc(pequal_cnt);
+               if VOL_PWM < pwm_power then
+                 pwm_power := VOL_PWM;
+             end;
+           {$endif}
          end;
        end else begin
          // no load or low current
@@ -305,6 +308,11 @@ begin
          {$ifdef USE_OLD_METHOD}
          vol2:=0;
          Inc_pwm:=Inc_Pwm_Max;
+         {$else}
+         if pequal_cnt > 0 then
+           VOL_PWM:=pwm_power;
+         pwm_power:=PWM_MAX;
+         pequal_cnt:=0;
          {$endif}
        end;
        // PWM
@@ -312,26 +320,45 @@ begin
          {$ifdef USE_OLD_METHOD}
          if VOL_PWM<(hi_PWM-Inc_pwm) then begin
            VOL_PWM:=VOL_PWM+Inc_pwm;
-         {$else}
-         if VOL_PWM<PWM_MAX then begin
-           Inc(VOL_PWM);
-         {$endif}
          end else begin
              VOL_PWM:=hi_PWM;
              flag_inc:=False;
          end;
+         {$else}
+         if VOL_PWM<PWM_MAX then begin
+           Inc(VOL_PWM);
+         end else begin
+           if pequal_cnt>0 then begin
+             VOL_PWM:=pwm_power;
+             pwm_power:=PWM_MAX;
+           end else begin
+             VOL_PWM:=PWM_MAX;
+             flag_inc:=false;
+           end;
+           pequal_cnt:=0;
+         end;
+         {$endif}
        end else begin
          {$ifdef USE_OLD_METHOD}
          if (VOL_PWM-lo_PWM)>(Inc_Pwm_Max+1-Inc_pwm) then begin
            VOL_PWM:=VOL_PWM-(Inc_Pwm_Max+1-Inc_pwm);
-         {$else}
-         if VOL_PWM>PWM_MIN then begin
-           Dec(VOL_PWM);
-         {$endif}
          end else begin
              VOL_PWM:=lo_PWM;
              flag_inc:=True;
          end;
+         {$else}
+         if VOL_PWM>PWM_MIN then begin
+           Dec(VOL_PWM);
+         end else begin
+           if pequal_cnt > 0 then begin
+             VOL_PWM:=pwm_power;
+             pwm_power:=PWM_MAX;
+           end else
+             VOL_PWM:=PWM_MIN;
+           flag_inc:=true;
+           pequal_cnt:=0;
+         end;
+         {$endif}
        end;
      end;
 end.

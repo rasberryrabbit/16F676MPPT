@@ -367,6 +367,7 @@ pclath
 pcon
 peie
 peie_bit
+pequal_cnt
 pi
 pie1
 pir1
@@ -388,6 +389,7 @@ psa_bit
 pwm_flag
 pwm_max
 pwm_min
+pwm_power
 pwm_sig
 pwm_tick
 pwmhi_div
