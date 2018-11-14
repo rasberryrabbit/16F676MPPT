@@ -186,7 +186,7 @@ L__main10:
 ;16F676MPPT.mpas,141 :: 		TMR1ON_bit:=1;
 	BSF        TMR1ON_bit+0, BitPos(TMR1ON_bit+0)
 ;16F676MPPT.mpas,143 :: 		VOL_PWM:=PWM_MID;
-	MOVLW      128
+	MOVLW      96
 	MOVWF      _VOL_PWM+0
 ;16F676MPPT.mpas,144 :: 		flag_inc:=False;
 	CLRF       _flag_inc+0
@@ -513,7 +513,7 @@ L__main33:
 	MOVLW      75
 	MOVWF      _LED1_tm+0
 ;16F676MPPT.mpas,207 :: 		VOL_PWM:=PWM_MID;
-	MOVLW      128
+	MOVLW      96
 	MOVWF      _VOL_PWM+0
 ;16F676MPPT.mpas,208 :: 		flag_inc:=false;
 	CLRF       _flag_inc+0
