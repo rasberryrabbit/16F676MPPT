@@ -31,7 +31,7 @@ _Interrupt:
 L__Interrupt6:
 ;16F676MPPT.mpas,72 :: 		TMR0:=255-PWM_MAX+ON_PWM;
 	MOVF       _ON_PWM+0, 0
-	ADDLW      45
+	ADDLW      65
 	MOVWF      TMR0+0
 ;16F676MPPT.mpas,73 :: 		PWM_FLAG:=1;
 	BSF        _PWM_FLAG+0, BitPos(_PWM_FLAG+0)
@@ -536,7 +536,7 @@ L__main34:
 	BTFSC      STATUS+0, 2
 	GOTO       L__main45
 ;16F676MPPT.mpas,217 :: 		if VOL_PWM<PWM_MAX then
-	MOVLW      210
+	MOVLW      190
 	SUBWF      _VOL_PWM+0, 0
 	BTFSC      STATUS+0, 0
 	GOTO       L__main48
@@ -546,7 +546,7 @@ L__main34:
 ;16F676MPPT.mpas,219 :: 		else begin
 L__main48:
 ;16F676MPPT.mpas,220 :: 		VOL_PWM:=PWM_MAX;
-	MOVLW      210
+	MOVLW      190
 	MOVWF      _VOL_PWM+0
 ;16F676MPPT.mpas,221 :: 		flag_inc:=false;
 	CLRF       _flag_inc+0
