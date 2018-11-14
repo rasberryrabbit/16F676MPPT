@@ -45,10 +45,10 @@ var
    Write_OPAMP : sbit at RC3_bit;
    PWM_FLAG : bit;
    PWM_TICK, ON_PWM, VOL_PWM : byte;
-   TICK_1000 : word;
+   TICK_1000 : integer;
 
    LED1_tm : byte;
-   prevtime, powertime : word;
+   prevtime, powertime : integer;
    adc_vol, adc_cur, vol_prev1, vol_prev2, cur_prev : word;
    power_prev, power_curr : dword;
    i, LM358_diff, power_flag : byte;
@@ -108,6 +108,10 @@ begin
        Delay_100ms;
        adc_cur:=ADC_Read(0);
        EEPROM_Write(0, Lo(adc_cur));
+       Delay_100ms;
+       LED1:=1;
+       Delay_ms(700);
+       LED1:=0;
      end;
      {$endif}
      
@@ -150,7 +154,7 @@ begin
          Inc(TICK_1000);
        end;
        // LED
-       if TICK_1000 - prevtime > LED1_tm then begin
+       if abs(TICK_1000 - prevtime) > LED1_tm then begin
          prevtime := TICK_1000;
          LED1 := not LED1;
        end;
@@ -173,7 +177,7 @@ begin
        adc_vol:=adc_vol * VOLMUL;
        
        // check time
-       if TICK_1000 - powertime < _UPDATE_INT then
+       if abs(TICK_1000 - powertime) < _UPDATE_INT then
          continue;
        powertime:=TICK_1000;
 

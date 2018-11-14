@@ -5,5 +5,6 @@ main
 		Delay_22us
 	EEPROM_Write
 	EEPROM_Read
+	abs
 	Mul_32x32_U
 Interrupt
