@@ -26,9 +26,9 @@ program _16F676MPPT;
 {.$define USE_8MHZ}
 
 const
-   PWM_MAX = 250;            // 75
-   PWM_MIN = 1;              // 1 -> 2, for low load condition.
-   PWM_MID = (PWM_MAX+PWM_MIN) div 2;
+   PWM_MAX = 210;            // 75
+   PWM_MIN = 3;              // 1 -> 2, for low load condition.
+   PWM_MID = (PWM_MAX+PWM_MIN) div 2+(255-PWM_MAX) div 2;
 
    TMR1L_LOAD=$18;
    TMR1H_LOAD=$FC;           // 4ms, 65536 - 1000
@@ -37,7 +37,10 @@ const
    _UPDATE_INT = 80 div 4;   // 80ms
 
    cLM358_diff = 0;
-   adc_max_loop = 4;
+   adc_max_loop = 8;
+   
+label
+   CONTLOOP;
 
 var
    LED1 : sbit at RC4_bit;
@@ -45,10 +48,10 @@ var
    Write_OPAMP : sbit at RC3_bit;
    PWM_FLAG : bit;
    PWM_TICK, ON_PWM, VOL_PWM : byte;
-   TICK_1000 : integer;
+   TICK_1000 : word;
 
    LED1_tm : byte;
-   prevtime, powertime : integer;
+   prevtime, powertime : word;
    adc_vol, adc_cur, vol_prev1, vol_prev2, cur_prev : word;
    power_prev, power_curr : dword;
    i, LM358_diff, power_flag : byte;
@@ -59,16 +62,16 @@ procedure Interrupt(); iv 0x0004; ics ICS_AUTO;
 begin
      if T0IF_bit=1 then begin
        if PWM_FLAG=1 then begin
+         PWM_SIG:=0;
          ON_PWM:=VOL_PWM;
          // on
          TMR0:=255-ON_PWM;
-         PWM_SIG:=0;
          PWM_FLAG:=0;
        end else begin
          // off
          TMR0:=255-PWM_MAX+ON_PWM;
-         PWM_SIG:=1;
          PWM_FLAG:=1;
+         PWM_SIG:=1;
        end;
        T0IF_bit:=0;
      end;
@@ -154,7 +157,8 @@ begin
          Inc(TICK_1000);
        end;
        // LED
-       if abs(TICK_1000 - prevtime) > LED1_tm then begin
+       wPWM := TICK_1000;
+       if wPWM - prevtime > LED1_tm then begin
          prevtime := TICK_1000;
          LED1 := not LED1;
        end;
@@ -177,8 +181,9 @@ begin
        adc_vol:=adc_vol * VOLMUL;
        
        // check time
-       if abs(TICK_1000 - powertime) < _UPDATE_INT then
-         continue;
+       wPWM:=TICK_1000;
+       if wPWM - powertime < _UPDATE_INT then
+         goto CONTLOOP;
        powertime:=TICK_1000;
 
        power_prev:=power_curr;
@@ -188,7 +193,7 @@ begin
          // power check
          if power_curr = power_prev then begin
            LED1_tm:=125;
-           continue;
+           goto CONTLOOP;
          end else if power_curr > power_prev then begin
            LED1_tm:=100;
          end else begin
@@ -204,7 +209,7 @@ begin
          power_curr:=0;
          adc_cur:=0;
          power_flag:=0;
-         continue;
+         goto CONTLOOP;
        end;
        
        // PWM
@@ -223,6 +228,6 @@ begin
              flag_inc:=true;
            end;
        end;
-
+CONTLOOP:
      end;
 end.
