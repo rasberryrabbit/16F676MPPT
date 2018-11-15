@@ -6,8 +6,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2018-07-04"
-Rev "1.2"
+Date "2018-11-15"
+Rev "1.3"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -140,7 +140,7 @@ L Device:CP C2
 U 1 1 55C35FB2
 P 7500 2750
 F 0 "C2" H 7525 2850 50  0000 L CNN
-F 1 "10uF" H 7525 2650 50  0000 L CNN
+F 1 "47uF" H 7525 2650 50  0000 L CNN
 F 2 "Capacitors_THT:CP_Radial_D12.5mm_P5.00mm" H 7538 2600 30  0001 C CNN
 F 3 "" H 7500 2750 60  0000 C CNN
 	1    7500 2750

@@ -1,4 +1,4 @@
-update=2018-11-01 오후 5:42:30
+update=2018-11-15 오후 2:13:11
 version=1
 last_client=kicad
 [pcbnew]
