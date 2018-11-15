@@ -26,9 +26,9 @@ program _16F676MPPT;
 {.$define USE_8MHZ}
 
 const
-   PWM_MAX = 200;            // 75
+   PWM_MAX = 200;            // 190
    PWM_MIN = 2;              // 1 -> 2, for low load condition.
-   PWM_MID = (PWM_MAX+PWM_MIN) div 2;
+   PWM_MID = (PWM_MAX+PWM_MIN) div 2+10;
 
    TMR1L_LOAD=$18;
    TMR1H_LOAD=$FC;           // 4ms, 65536 - 1000
