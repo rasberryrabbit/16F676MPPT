@@ -54,7 +54,7 @@ var
    prevtime, powertime : word;
    adc_vol, adc_cur, vol_prev1, vol_prev2, cur_prev : word;
    power_prev, power_curr : dword;
-   i, LM358_diff, power_flag : byte;
+   i, LM358_diff : byte;
    flag_inc : boolean;
    wPWM, wTemp : word;
 
@@ -186,7 +186,7 @@ begin
          goto CONTLOOP;
        powertime:=TICK_1000;
 
-       power_prev:=power_curr;
+       power_prev:= power_curr;
        power_curr:= adc_vol * adc_cur;
 
        if adc_cur>LM358_diff then begin
@@ -208,7 +208,6 @@ begin
          flag_inc:=false;
          power_curr:=0;
          adc_cur:=0;
-         power_flag:=0;
          goto CONTLOOP;
        end;
        

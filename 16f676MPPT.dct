@@ -370,7 +370,6 @@ porta
 portc
 pow
 power_curr
-power_flag
 power_prev
 powertime
 prevtime
