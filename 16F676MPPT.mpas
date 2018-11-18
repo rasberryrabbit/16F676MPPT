@@ -26,8 +26,8 @@ program _16F676MPPT;
 {.$define USE_8MHZ}
 
 const
-   PWM_MAX = 200;            // 190
-   PWM_MIN = 2;              // 1 -> 2, for low load condition.
+   PWM_MAX = 200;            // 90% due to bootstrap
+   PWM_MIN = 2;              // 10% due to bootstrap
    PWM_MID = (PWM_MAX+PWM_MIN) div 2+10;
 
    TMR1L_LOAD=$18;
