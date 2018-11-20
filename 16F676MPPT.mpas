@@ -34,7 +34,7 @@ const
    TMR1H_LOAD=$FC;           // 4ms, 65536 - 1000
 
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
-   _UPDATE_INT = 80 div 4;   // 80ms
+   _UPDATE_INT = 90 div 4;   // 90ms
 
    cLM358_diff = 0;
    adc_max_loop = 8;
