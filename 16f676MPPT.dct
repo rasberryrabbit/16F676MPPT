@@ -33,6 +33,7 @@ _lcd_third_row
 _lcd_turn_off
 _lcd_turn_on
 _lcd_underline_on
+_pwm_check
 _update_int
 abs
 acos
@@ -145,7 +146,7 @@ cose3
 cosh
 cout
 cout_bit
-cur_prev
+curbuf
 dbl_mant_dig
 dbl_max
 dc
@@ -174,6 +175,7 @@ div_32x32_s
 div_32x32_u
 div_8x8_s
 div_8x8_u
+doadcread
 double
 double2byte
 double2int
@@ -224,9 +226,9 @@ go_not_done_bit
 half_pi
 halfbits
 hh
-i
 ics_auto
 ics_off
+idx
 indf
 int2double
 intcon
@@ -383,12 +385,10 @@ ps2_config
 ps2_key_read
 psa
 psa_bit
-pwm_flag
 pwm_max
 pwm_mid
 pwm_min
 pwm_sig
-pwm_tick
 r0
 r1
 r10
@@ -581,8 +581,10 @@ vdelay_advanced_ms
 vdelay_ms
 vol_prev1
 vol_prev2
-vol_pwm
+volbuf
 volmul
+volpwm
+voltime
 vr0
 vr0_bit
 vr1
@@ -615,7 +617,6 @@ wpua4
 wpua4_bit
 wpua5
 wpua5_bit
-wpwm
 wr
 wr_bit
 wren
@@ -623,7 +624,7 @@ wren_bit
 wrerr
 wrerr_bit
 write_opamp
-wtemp
+wtmp
 yy
 z
 z_bit
