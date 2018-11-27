@@ -6,8 +6,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2018-11-15"
-Rev "1.3"
+Date "2018-11-25"
+Rev "1.4"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -291,7 +291,7 @@ L Device:R R11
 U 1 1 55C4C21C
 P 6650 3600
 F 0 "R11" V 6730 3600 50  0000 C CNN
-F 1 "100k" V 6650 3600 50  0000 C CNN
+F 1 "4.7k" V 6650 3600 50  0000 C CNN
 F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 6580 3600 30  0001 C CNN
 F 3 "" H 6650 3600 30  0000 C CNN
 	1    6650 3600
