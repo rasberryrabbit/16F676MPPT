@@ -48,8 +48,8 @@ var
    PWM_SIG : sbit at RC1_bit;
    Write_OPAMP : sbit at RC3_bit;
    ON_PWM, VOLPWM : byte;
-   doADCRead : byte;
    TICK_1000 : word;
+   doADCRead : byte;
 
    LED1_tm : byte;
    prevtime, powertime, voltime : word;
@@ -71,8 +71,8 @@ begin
          TMR0:=255-ON_PWM;
        end else begin
          // off
-         TMR0:=255-PWM_MAX+ON_PWM;
          doADCRead:=1;
+         TMR0:=255-PWM_MAX+ON_PWM;
        end;
        T0IF_bit:=0;
      end;

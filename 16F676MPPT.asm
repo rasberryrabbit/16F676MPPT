@@ -28,13 +28,13 @@ _Interrupt:
 ;16F676MPPT.mpas,72 :: 		end else begin
 	GOTO       L__Interrupt7
 L__Interrupt6:
-;16F676MPPT.mpas,74 :: 		TMR0:=255-PWM_MAX+ON_PWM;
+;16F676MPPT.mpas,74 :: 		doADCRead:=1;
+	MOVLW      1
+	MOVWF      _doADCRead+0
+;16F676MPPT.mpas,75 :: 		TMR0:=255-PWM_MAX+ON_PWM;
 	MOVF       _ON_PWM+0, 0
 	ADDLW      5
 	MOVWF      TMR0+0
-;16F676MPPT.mpas,75 :: 		doADCRead:=1;
-	MOVLW      1
-	MOVWF      _doADCRead+0
 ;16F676MPPT.mpas,76 :: 		end;
 L__Interrupt7:
 ;16F676MPPT.mpas,77 :: 		T0IF_bit:=0;
