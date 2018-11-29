@@ -34,11 +34,15 @@ const
    TMR1H_LOAD=$F8;           // 2ms, 65536 - 2000
 
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
-   _UPDATE_INT = 90 div 2;   // consider 90ms
+   _UPDATE_INT = 50 div 2;   // consider 90ms
    _PWM_CHECK = 4500 div 2;
 
    cLM358_diff = 0;
-   adc_max_loop = 2;
+{$ifdef USE_8MHZ}
+   adc_max_loop = 3;     // 4
+{$else}
+   adc_max_loop = 6;     // 8
+{$endif}
    
 label
    CONTLOOP;
@@ -54,24 +58,22 @@ var
    LED1_tm : byte;
    prevtime, powertime, voltime : word;
    adc_vol, adc_cur, vol_prev1, vol_prev2 : word;
-   volbuf : array[0..1] of word;
-   curbuf : array[0..1] of word;
    power_prev, power_curr : dword;
-   idx, LM358_diff : byte;
+   i, LM358_diff : byte;
    flag_inc : boolean;
-   wtmp : word;
+   wtmp, xtmp : word;
 
 procedure Interrupt(); iv 0x0004; ics ICS_AUTO;
 begin
      if T0IF_bit=1 then begin
        PWM_SIG:=not PWM_SIG;
        if PWM_SIG=0 then begin
+         doADCRead:=1;
          // on
          ON_PWM:=VOLPWM;
          TMR0:=255-ON_PWM;
        end else begin
          // off
-         doADCRead:=1;
          TMR0:=255-PWM_MAX+ON_PWM;
        end;
        T0IF_bit:=0;
@@ -164,11 +166,6 @@ begin
      prevtime:=0;
      voltime:=0;
      
-     volbuf[0]:=0;
-     volbuf[1]:=0;
-     curbuf[0]:=0;
-     curbuf[1]:=0;
-     idx:=0;
      // starting LED
      clrwdt;
      delay_ms(300);
@@ -185,18 +182,21 @@ begin
          LED1 := not LED1;
        end;
 
+       // Read Sync with PWM clock
+       doADCRead:=0;
        // save previous adc values
        vol_prev2:=vol_prev1;
        vol_prev1:=adc_vol;
-       // Read Sync with PWM clock
-       doADCRead:=0;
        while doADCRead=0 do ;
-       // read adc value
-       volbuf[idx]:=ADC_Read(2);
-       curbuf[idx]:=ADC_Read(0);
-       idx:=1-idx;
-       adc_cur:=(curbuf[0]+curbuf[1]+1) div 2;
-       adc_vol:=(volbuf[0]+volbuf[1]+1) div 2;
+       // adc read
+       adc_vol:=ADC_Read(2);
+       adc_cur:=ADC_Read(0);
+       for i:=0 to adc_max_loop-2 do begin
+         wtmp:=ADC_Read(2);
+         xtmp:=ADC_Read(0);
+         adc_vol:=(adc_vol+wtmp) div 2;
+         adc_cur:=(adc_cur+xtmp) div 2;
+       end;
        adc_vol:=adc_vol * VOLMUL;
 
        // check time
@@ -221,15 +221,14 @@ begin
 
        if adc_cur>LM358_diff then begin
          // power check
-         if power_curr = power_prev then begin
-           LED1_tm:=250;
-           goto CONTLOOP;
-         end else if power_curr > power_prev then begin
-           LED1_tm:=200;
-         end else begin
+         if power_curr < power_prev then begin
            LED1_tm:=150;
            flag_inc:=not flag_inc;
-         end;
+         end else if power_curr = power_prev then begin
+           LED1_tm:=250;
+           goto CONTLOOP;
+         end else
+           LED1_tm:=200;
          if (adc_vol+vol_prev2+1) div 2 < vol_prev1 then begin
            flag_inc:=true;
          end;

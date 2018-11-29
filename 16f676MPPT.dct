@@ -146,7 +146,6 @@ cose3
 cosh
 cout
 cout_bit
-curbuf
 dbl_mant_dig
 dbl_max
 dc
@@ -226,9 +225,9 @@ go_not_done_bit
 half_pi
 halfbits
 hh
+i
 ics_auto
 ics_off
-idx
 indf
 int2double
 intcon
@@ -581,7 +580,6 @@ vdelay_advanced_ms
 vdelay_ms
 vol_prev1
 vol_prev2
-volbuf
 volmul
 volpwm
 voltime
@@ -625,6 +623,7 @@ wrerr
 wrerr_bit
 write_opamp
 wtmp
+xtmp
 yy
 z
 z_bit
