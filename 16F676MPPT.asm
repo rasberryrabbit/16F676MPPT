@@ -33,7 +33,7 @@ _Interrupt:
 L__Interrupt6:
 ;16F676MPPT.mpas,77 :: 		TMR0:=255-PWM_MAX+ON_PWM;
 	MOVF       _ON_PWM+0, 0
-	ADDLW      5
+	ADDLW      15
 	MOVWF      TMR0+0
 ;16F676MPPT.mpas,78 :: 		end;
 L__Interrupt7:
@@ -101,8 +101,8 @@ _main:
 	BCF        RC4_bit+0, BitPos(RC4_bit+0)
 ;16F676MPPT.mpas,104 :: 		PWM_SIG:=1;
 	BSF        RC1_bit+0, BitPos(RC1_bit+0)
-;16F676MPPT.mpas,105 :: 		LED1_tm:=250;
-	MOVLW      250
+;16F676MPPT.mpas,105 :: 		LED1_tm:=100;
+	MOVLW      100
 	MOVWF      _LED1_tm+0
 ;16F676MPPT.mpas,106 :: 		ON_PWM:=0;
 	CLRF       _ON_PWM+0
@@ -217,7 +217,7 @@ L__main17:
 ;16F676MPPT.mpas,159 :: 		TMR1ON_bit:=1;
 	BSF        TMR1ON_bit+0, BitPos(TMR1ON_bit+0)
 ;16F676MPPT.mpas,161 :: 		VOLPWM:=PWM_MID;
-	MOVLW      125
+	MOVLW      115
 	MOVWF      _VOLPWM+0
 ;16F676MPPT.mpas,162 :: 		flag_inc:=False;
 	CLRF       _flag_inc+0
@@ -463,7 +463,7 @@ L__main40:
 	MOVWF      _wtmp+1
 ;16F676MPPT.mpas,214 :: 		if ON_PWM>PWM_MID then begin
 	MOVF       _ON_PWM+0, 0
-	SUBLW      125
+	SUBLW      115
 	BTFSC      STATUS+0, 0
 	GOTO       L__main43
 ;16F676MPPT.mpas,215 :: 		if wtmp - voltime > _PWM_CHECK then begin
@@ -514,60 +514,60 @@ L__main44:
 L__main75:
 	BTFSC      STATUS+0, 0
 	GOTO       L__main49
-;16F676MPPT.mpas,224 :: 		if power_curr < power_prev then begin
-	MOVF       _power_prev+3, 0
-	SUBWF      _power_curr+3, 0
-	BTFSS      STATUS+0, 2
-	GOTO       L__main76
-	MOVF       _power_prev+2, 0
-	SUBWF      _power_curr+2, 0
-	BTFSS      STATUS+0, 2
-	GOTO       L__main76
-	MOVF       _power_prev+1, 0
-	SUBWF      _power_curr+1, 0
-	BTFSS      STATUS+0, 2
-	GOTO       L__main76
-	MOVF       _power_prev+0, 0
-	SUBWF      _power_curr+0, 0
-L__main76:
-	BTFSC      STATUS+0, 0
-	GOTO       L__main52
-;16F676MPPT.mpas,225 :: 		LED1_tm:=150;
-	MOVLW      150
-	MOVWF      _LED1_tm+0
-;16F676MPPT.mpas,226 :: 		flag_inc:=not flag_inc;
-	COMF       _flag_inc+0, 1
-;16F676MPPT.mpas,227 :: 		end else if power_curr = power_prev then begin
-	GOTO       L__main53
-L__main52:
+;16F676MPPT.mpas,224 :: 		if power_curr = power_prev then begin
 	MOVF       _power_curr+3, 0
 	XORWF      _power_prev+3, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main77
+	GOTO       L__main76
 	MOVF       _power_curr+2, 0
 	XORWF      _power_prev+2, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main77
+	GOTO       L__main76
 	MOVF       _power_curr+1, 0
 	XORWF      _power_prev+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main77
+	GOTO       L__main76
 	MOVF       _power_curr+0, 0
 	XORWF      _power_prev+0, 0
-L__main77:
+L__main76:
 	BTFSS      STATUS+0, 2
-	GOTO       L__main55
-;16F676MPPT.mpas,228 :: 		LED1_tm:=250;
+	GOTO       L__main52
+;16F676MPPT.mpas,225 :: 		LED1_tm:=250;
 	MOVLW      250
 	MOVWF      _LED1_tm+0
-;16F676MPPT.mpas,229 :: 		goto CONTLOOP;
+;16F676MPPT.mpas,226 :: 		goto CONTLOOP;
 	GOTO       L__main_CONTLOOP
+;16F676MPPT.mpas,227 :: 		end else if power_curr < power_prev then begin
+L__main52:
+	MOVF       _power_prev+3, 0
+	SUBWF      _power_curr+3, 0
+	BTFSS      STATUS+0, 2
+	GOTO       L__main77
+	MOVF       _power_prev+2, 0
+	SUBWF      _power_curr+2, 0
+	BTFSS      STATUS+0, 2
+	GOTO       L__main77
+	MOVF       _power_prev+1, 0
+	SUBWF      _power_curr+1, 0
+	BTFSS      STATUS+0, 2
+	GOTO       L__main77
+	MOVF       _power_prev+0, 0
+	SUBWF      _power_curr+0, 0
+L__main77:
+	BTFSC      STATUS+0, 0
+	GOTO       L__main55
+;16F676MPPT.mpas,228 :: 		LED1_tm:=150;
+	MOVLW      150
+	MOVWF      _LED1_tm+0
+;16F676MPPT.mpas,229 :: 		flag_inc:=not flag_inc;
+	COMF       _flag_inc+0, 1
 ;16F676MPPT.mpas,230 :: 		end else
+	GOTO       L__main56
 L__main55:
 ;16F676MPPT.mpas,231 :: 		LED1_tm:=200;
 	MOVLW      200
 	MOVWF      _LED1_tm+0
-L__main53:
+L__main56:
 ;16F676MPPT.mpas,232 :: 		if (adc_vol+vol_prev2+1) div 2 < vol_prev1 then begin
 	MOVF       _vol_prev2+0, 0
 	ADDWF      _adc_vol+0, 0
@@ -613,7 +613,7 @@ L__main49:
 	MOVLW      100
 	MOVWF      _LED1_tm+0
 ;16F676MPPT.mpas,237 :: 		VOLPWM:=PWM_MID;
-	MOVLW      125
+	MOVLW      115
 	MOVWF      _VOLPWM+0
 ;16F676MPPT.mpas,238 :: 		flag_inc:=false;
 	CLRF       _flag_inc+0
@@ -634,7 +634,7 @@ L__main50:
 	BTFSC      STATUS+0, 2
 	GOTO       L__main61
 ;16F676MPPT.mpas,246 :: 		if VOLPWM<PWM_MAX then
-	MOVLW      250
+	MOVLW      240
 	SUBWF      _VOLPWM+0, 0
 	BTFSC      STATUS+0, 0
 	GOTO       L__main64
@@ -644,7 +644,7 @@ L__main50:
 ;16F676MPPT.mpas,248 :: 		else begin
 L__main64:
 ;16F676MPPT.mpas,249 :: 		VOLPWM:=PWM_MAX;
-	MOVLW      250
+	MOVLW      240
 	MOVWF      _VOLPWM+0
 ;16F676MPPT.mpas,250 :: 		flag_inc:=false;
 	CLRF       _flag_inc+0

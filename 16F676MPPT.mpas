@@ -26,9 +26,9 @@ program _16F676MPPT;
 {.$define USE_8MHZ}
 
 const
-   PWM_MAX = 250;            // 90% due to bootstrap
-   PWM_MIN = 1;              // 10% due to bootstrap
-   PWM_MID = (PWM_MAX+PWM_MIN) div 2;
+   PWM_MAX = 240;
+   PWM_MIN = 1;
+   PWM_MID = (PWM_MAX+PWM_MIN) div 2-5;
 
    TMR1L_LOAD=$30;
    TMR1H_LOAD=$F8;           // 2ms, 65536 - 2000
@@ -102,7 +102,7 @@ begin
 
      LED1:=0;
      PWM_SIG:=1;
-     LED1_tm:=250;
+     LED1_tm:=100;
      ON_PWM:=0;
      VOLPWM:=0;
      TICK_1000:=0;
@@ -221,12 +221,12 @@ begin
 
        if adc_cur>LM358_diff then begin
          // power check
-         if power_curr < power_prev then begin
-           LED1_tm:=150;
-           flag_inc:=not flag_inc;
-         end else if power_curr = power_prev then begin
+         if power_curr = power_prev then begin
            LED1_tm:=250;
            goto CONTLOOP;
+         end else if power_curr < power_prev then begin
+           LED1_tm:=150;
+           flag_inc:=not flag_inc;
          end else
            LED1_tm:=200;
          if (adc_vol+vol_prev2+1) div 2 < vol_prev1 then begin
