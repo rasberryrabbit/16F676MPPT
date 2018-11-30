@@ -26,7 +26,7 @@ program _16F676MPPT;
 {.$define USE_8MHZ}
 
 const
-   PWM_MAX = 240;
+   PWM_MAX = 230;
    PWM_MIN = 1;
    PWM_MID = (PWM_MAX+PWM_MIN) div 2-5;
 
@@ -34,7 +34,7 @@ const
    TMR1H_LOAD=$F8;           // 2ms, 65536 - 2000
 
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
-   _UPDATE_INT = 50 div 2;   // consider 90ms
+   _UPDATE_INT = 20 div 2;   // consider 90ms
    _PWM_CHECK = 4500 div 2;
 
    cLM358_diff = 0;
@@ -229,9 +229,11 @@ begin
            flag_inc:=not flag_inc;
          end else
            LED1_tm:=200;
+         {
          if (adc_vol+vol_prev2+1) div 2 < vol_prev1 then begin
            flag_inc:=true;
          end;
+         }
        end else begin
          LED1_tm:=100;
          VOLPWM:=PWM_MID;
