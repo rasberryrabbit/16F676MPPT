@@ -1136,30 +1136,17 @@ Wire Wire Line
 	8950 2200 8950 2350
 Wire Wire Line
 	8950 2200 9000 2200
-$Comp
-L Device:R R17
-U 1 1 5BF07E56
-P 7200 3050
-F 0 "R17" V 7280 3050 50  0000 C CNN
-F 1 "1k" V 7200 3050 50  0000 C CNN
-F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 7130 3050 30  0001 C CNN
-F 3 "" H 7200 3050 30  0000 C CNN
-	1    7200 3050
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	6850 3000 6850 3050
-Wire Wire Line
-	7050 3050 6850 3050
 Wire Wire Line
 	8000 2200 8000 3500
 Connection ~ 6850 3050
 Wire Wire Line
 	6850 3050 6850 3100
 Wire Wire Line
-	7350 3050 7700 3050
-Wire Wire Line
 	7700 3050 7700 2500
 Wire Wire Line
 	6350 3600 9100 3600
+Wire Wire Line
+	6850 3050 7700 3050
 $EndSCHEMATC
