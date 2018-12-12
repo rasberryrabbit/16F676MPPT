@@ -5,10 +5,10 @@ hint: 1	1015	Hint: Compiling unit "F:\mikroPascal PRO for PIC\works\16f676MPPT\1
 hint: 66	1021	Hint: interrupt handler (Interrupt at 0x0004)	16F676MPPT.mpas
 hint: 265	1010	Hint: Unit "16F676MPPT.mpas" has been recompiled	16F676MPPT.mpas
 diagnostics: 0	134	Compiled Successfully	F:\mikroPascal PRO for PIC\works\16f676MPPT\16F676MPPT.mpas
-diagnostics: 0	139	All files Compiled in 16 ms	 
+diagnostics: 0	139	All files Compiled in 0 ms	 
 hint: 0	1144	Used RAM (bytes): 40 (83%)  Free RAM (bytes): 8 (17%)	Used RAM (bytes): 40 (83%)  Free RAM (bytes): 8 (17%)
 hint: 0	1144	Used ROM (program words): 610 (60%)  Free ROM (program words): 414 (40%)	Used ROM (program words): 610 (60%)  Free ROM (program words): 414 (40%)
 diagnostics: 0	145	Project Linked Successfully	16f676MPPT.mpppi
-diagnostics: 0	140	Linked in 15 ms	 
-diagnostics: 0	141	Project '16f676MPPT.mpppi' completed: 47 ms	 
-diagnostics: 0	103	Finished successfully: 30 11 2018, 11:06:27	16f676MPPT.mpppi
+diagnostics: 0	140	Linked in 31 ms	 
+diagnostics: 0	141	Project '16f676MPPT.mpppi' completed: 62 ms	 
+diagnostics: 0	103	Finished successfully: 12 12 2018, 19:03:19	16f676MPPT.mpppi

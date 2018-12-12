@@ -34,7 +34,7 @@ const
    TMR1H_LOAD=$F8;           // 2ms, 65536 - 2000
 
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
-   _UPDATE_INT = 20 div 2;   // consider 90ms
+   _UPDATE_INT = 90 div 2;   // consider 90ms
    _PWM_CHECK = 4500 div 2;
 
    cLM358_diff = 0;
@@ -189,11 +189,11 @@ begin
        vol_prev1:=adc_vol;
        while doADCRead=0 do ;
        // adc read
-       adc_vol:=ADC_Read(2);
        adc_cur:=ADC_Read(0);
+       adc_vol:=ADC_Read(2);
        for i:=0 to adc_max_loop-2 do begin
-         wtmp:=ADC_Read(2);
          xtmp:=ADC_Read(0);
+         wtmp:=ADC_Read(2);
          adc_vol:=(adc_vol+wtmp) div 2;
          adc_cur:=(adc_cur+xtmp) div 2;
        end;

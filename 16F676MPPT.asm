@@ -324,7 +324,14 @@ L__main30:
 	XORLW      0
 	BTFSC      STATUS+0, 2
 	GOTO       L__main30
-;16F676MPPT.mpas,192 :: 		adc_vol:=ADC_Read(2);
+;16F676MPPT.mpas,192 :: 		adc_cur:=ADC_Read(0);
+	CLRF       FARG_ADC_Read_channel+0
+	CALL       _ADC_Read+0
+	MOVF       R0+0, 0
+	MOVWF      _adc_cur+0
+	MOVF       R0+1, 0
+	MOVWF      _adc_cur+1
+;16F676MPPT.mpas,193 :: 		adc_vol:=ADC_Read(2);
 	MOVLW      2
 	MOVWF      FARG_ADC_Read_channel+0
 	CALL       _ADC_Read+0
@@ -332,17 +339,17 @@ L__main30:
 	MOVWF      _adc_vol+0
 	MOVF       R0+1, 0
 	MOVWF      _adc_vol+1
-;16F676MPPT.mpas,193 :: 		adc_cur:=ADC_Read(0);
-	CLRF       FARG_ADC_Read_channel+0
-	CALL       _ADC_Read+0
-	MOVF       R0+0, 0
-	MOVWF      _adc_cur+0
-	MOVF       R0+1, 0
-	MOVWF      _adc_cur+1
 ;16F676MPPT.mpas,194 :: 		for i:=0 to adc_max_loop-2 do begin
 	CLRF       _i+0
 L__main35:
-;16F676MPPT.mpas,195 :: 		wtmp:=ADC_Read(2);
+;16F676MPPT.mpas,195 :: 		xtmp:=ADC_Read(0);
+	CLRF       FARG_ADC_Read_channel+0
+	CALL       _ADC_Read+0
+	MOVF       R0+0, 0
+	MOVWF      _xtmp+0
+	MOVF       R0+1, 0
+	MOVWF      _xtmp+1
+;16F676MPPT.mpas,196 :: 		wtmp:=ADC_Read(2);
 	MOVLW      2
 	MOVWF      FARG_ADC_Read_channel+0
 	CALL       _ADC_Read+0
@@ -350,17 +357,10 @@ L__main35:
 	MOVWF      _wtmp+0
 	MOVF       R0+1, 0
 	MOVWF      _wtmp+1
-;16F676MPPT.mpas,196 :: 		xtmp:=ADC_Read(0);
-	CLRF       FARG_ADC_Read_channel+0
-	CALL       _ADC_Read+0
-	MOVF       R0+0, 0
-	MOVWF      _xtmp+0
-	MOVF       R0+1, 0
-	MOVWF      _xtmp+1
 ;16F676MPPT.mpas,197 :: 		adc_vol:=(adc_vol+wtmp) div 2;
-	MOVF       _wtmp+0, 0
+	MOVF       R0+0, 0
 	ADDWF      _adc_vol+0, 1
-	MOVF       _wtmp+1, 0
+	MOVF       R0+1, 0
 	BTFSC      STATUS+0, 0
 	ADDLW      1
 	ADDWF      _adc_vol+1, 1
@@ -368,9 +368,9 @@ L__main35:
 	RRF        _adc_vol+0, 1
 	BCF        _adc_vol+1, 7
 ;16F676MPPT.mpas,198 :: 		adc_cur:=(adc_cur+xtmp) div 2;
-	MOVF       R0+0, 0
+	MOVF       _xtmp+0, 0
 	ADDWF      _adc_cur+0, 1
-	MOVF       R0+1, 0
+	MOVF       _xtmp+1, 0
 	BTFSC      STATUS+0, 0
 	ADDLW      1
 	ADDWF      _adc_cur+1, 1
@@ -410,7 +410,7 @@ L__main38:
 	SUBWF      R1+1, 0
 	BTFSS      STATUS+0, 2
 	GOTO       L__main70
-	MOVLW      10
+	MOVLW      45
 	SUBWF      R1+0, 0
 L__main70:
 	BTFSC      STATUS+0, 0
