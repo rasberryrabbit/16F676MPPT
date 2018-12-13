@@ -60,7 +60,7 @@ L__Interrupt3:
 L__Interrupt9:
 ;16F676MPPT.mpas,87 :: 		end;
 L_end_Interrupt:
-L__Interrupt67:
+L__Interrupt70:
 	MOVF       ___savePCLATH+0, 0
 	MOVWF      PCLATH+0
 	SWAPF      ___saveSTATUS+0, 0
@@ -290,10 +290,10 @@ L__main22:
 	MOVF       R1+1, 0
 	SUBLW      0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main69
+	GOTO       L__main72
 	MOVF       R1+0, 0
 	SUBWF      _LED1_tm+0, 0
-L__main69:
+L__main72:
 	BTFSC      STATUS+0, 0
 	GOTO       L__main27
 ;16F676MPPT.mpas,181 :: 		prevtime := wtmp;
@@ -367,17 +367,23 @@ L__main35:
 	RRF        _adc_vol+1, 1
 	RRF        _adc_vol+0, 1
 	BCF        _adc_vol+1, 7
-;16F676MPPT.mpas,198 :: 		adc_cur:=(adc_cur+xtmp) div 2;
-	MOVF       _xtmp+0, 0
-	ADDWF      _adc_cur+0, 1
+;16F676MPPT.mpas,198 :: 		if xtmp > adc_cur then
 	MOVF       _xtmp+1, 0
+	SUBWF      _adc_cur+1, 0
+	BTFSS      STATUS+0, 2
+	GOTO       L__main73
+	MOVF       _xtmp+0, 0
+	SUBWF      _adc_cur+0, 0
+L__main73:
 	BTFSC      STATUS+0, 0
-	ADDLW      1
-	ADDWF      _adc_cur+1, 1
-	RRF        _adc_cur+1, 1
-	RRF        _adc_cur+0, 1
-	BCF        _adc_cur+1, 7
-;16F676MPPT.mpas,199 :: 		end;
+	GOTO       L__main40
+;16F676MPPT.mpas,199 :: 		adc_cur := xtmp;
+	MOVF       _xtmp+0, 0
+	MOVWF      _adc_cur+0
+	MOVF       _xtmp+1, 0
+	MOVWF      _adc_cur+1
+L__main40:
+;16F676MPPT.mpas,201 :: 		end;
 	MOVF       _i+0, 0
 	XORLW      4
 	BTFSC      STATUS+0, 2
@@ -385,19 +391,19 @@ L__main35:
 	INCF       _i+0, 1
 	GOTO       L__main35
 L__main38:
-;16F676MPPT.mpas,200 :: 		adc_vol:=adc_vol * VOLMUL;
+;16F676MPPT.mpas,202 :: 		adc_vol:=adc_vol * VOLMUL;
 	RLF        _adc_vol+0, 1
 	RLF        _adc_vol+1, 1
 	BCF        _adc_vol+0, 0
 	RLF        _adc_vol+0, 1
 	RLF        _adc_vol+1, 1
 	BCF        _adc_vol+0, 0
-;16F676MPPT.mpas,203 :: 		wtmp:=TICK_1000;
+;16F676MPPT.mpas,205 :: 		wtmp:=TICK_1000;
 	MOVF       _TICK_1000+0, 0
 	MOVWF      _wtmp+0
 	MOVF       _TICK_1000+1, 0
 	MOVWF      _wtmp+1
-;16F676MPPT.mpas,204 :: 		if wtmp - powertime < _UPDATE_INT then
+;16F676MPPT.mpas,206 :: 		if wtmp - powertime < _UPDATE_INT then
 	MOVF       _powertime+0, 0
 	SUBWF      _TICK_1000+0, 0
 	MOVWF      R1+0
@@ -409,23 +415,23 @@ L__main38:
 	MOVLW      0
 	SUBWF      R1+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main70
-	MOVLW      45
+	GOTO       L__main74
+	MOVLW      25
 	SUBWF      R1+0, 0
-L__main70:
+L__main74:
 	BTFSC      STATUS+0, 0
-	GOTO       L__main40
-;16F676MPPT.mpas,205 :: 		goto CONTLOOP;
+	GOTO       L__main43
+;16F676MPPT.mpas,207 :: 		goto CONTLOOP;
 	GOTO       L__main_CONTLOOP
-L__main40:
-;16F676MPPT.mpas,206 :: 		clrwdt;
+L__main43:
+;16F676MPPT.mpas,208 :: 		clrwdt;
 	CLRWDT
-;16F676MPPT.mpas,207 :: 		powertime:=wtmp;
+;16F676MPPT.mpas,209 :: 		powertime:=wtmp;
 	MOVF       _wtmp+0, 0
 	MOVWF      _powertime+0
 	MOVF       _wtmp+1, 0
 	MOVWF      _powertime+1
-;16F676MPPT.mpas,209 :: 		power_prev:= power_curr;
+;16F676MPPT.mpas,211 :: 		power_prev:= power_curr;
 	MOVF       _power_curr+0, 0
 	MOVWF      _power_prev+0
 	MOVF       _power_curr+1, 0
@@ -434,7 +440,7 @@ L__main40:
 	MOVWF      _power_prev+2
 	MOVF       _power_curr+3, 0
 	MOVWF      _power_prev+3
-;16F676MPPT.mpas,210 :: 		power_curr:= adc_vol * adc_cur;
+;16F676MPPT.mpas,212 :: 		power_curr:= adc_vol * adc_cur;
 	MOVF       _adc_vol+0, 0
 	MOVWF      R0+0
 	MOVF       _adc_vol+1, 0
@@ -456,17 +462,17 @@ L__main40:
 	MOVWF      _power_curr+2
 	MOVF       R0+3, 0
 	MOVWF      _power_curr+3
-;16F676MPPT.mpas,213 :: 		wtmp:=TICK_1000;
+;16F676MPPT.mpas,215 :: 		wtmp:=TICK_1000;
 	MOVF       _TICK_1000+0, 0
 	MOVWF      _wtmp+0
 	MOVF       _TICK_1000+1, 0
 	MOVWF      _wtmp+1
-;16F676MPPT.mpas,214 :: 		if ON_PWM>PWM_MID then begin
+;16F676MPPT.mpas,216 :: 		if ON_PWM>PWM_MID then begin
 	MOVF       _ON_PWM+0, 0
 	SUBLW      110
 	BTFSC      STATUS+0, 0
-	GOTO       L__main43
-;16F676MPPT.mpas,215 :: 		if wtmp - voltime > _PWM_CHECK then begin
+	GOTO       L__main46
+;16F676MPPT.mpas,217 :: 		if wtmp - voltime > _PWM_CHECK then begin
 	MOVF       _voltime+0, 0
 	SUBWF      _wtmp+0, 0
 	MOVWF      R1+0
@@ -478,168 +484,168 @@ L__main40:
 	MOVF       R1+1, 0
 	SUBLW      8
 	BTFSS      STATUS+0, 2
-	GOTO       L__main71
+	GOTO       L__main75
 	MOVF       R1+0, 0
 	SUBLW      202
-L__main71:
+L__main75:
 	BTFSC      STATUS+0, 0
-	GOTO       L__main46
-;16F676MPPT.mpas,216 :: 		voltime:=wtmp;
+	GOTO       L__main49
+;16F676MPPT.mpas,218 :: 		voltime:=wtmp;
 	MOVF       _wtmp+0, 0
 	MOVWF      _voltime+0
 	MOVF       _wtmp+1, 0
 	MOVWF      _voltime+1
-;16F676MPPT.mpas,217 :: 		adc_cur:=LM358_diff;
+;16F676MPPT.mpas,219 :: 		adc_cur:=LM358_diff;
 	MOVF       _LM358_diff+0, 0
 	MOVWF      _adc_cur+0
 	CLRF       _adc_cur+1
-;16F676MPPT.mpas,218 :: 		end;
+;16F676MPPT.mpas,220 :: 		end;
+L__main49:
+;16F676MPPT.mpas,221 :: 		end else
+	GOTO       L__main47
 L__main46:
-;16F676MPPT.mpas,219 :: 		end else
-	GOTO       L__main44
-L__main43:
-;16F676MPPT.mpas,220 :: 		voltime:=wtmp;
+;16F676MPPT.mpas,222 :: 		voltime:=wtmp;
 	MOVF       _wtmp+0, 0
 	MOVWF      _voltime+0
 	MOVF       _wtmp+1, 0
 	MOVWF      _voltime+1
-L__main44:
-;16F676MPPT.mpas,222 :: 		if adc_cur>LM358_diff then begin
+L__main47:
+;16F676MPPT.mpas,224 :: 		if adc_cur>LM358_diff then begin
 	MOVF       _adc_cur+1, 0
 	SUBLW      0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main72
+	GOTO       L__main76
 	MOVF       _adc_cur+0, 0
 	SUBWF      _LM358_diff+0, 0
-L__main72:
+L__main76:
 	BTFSC      STATUS+0, 0
-	GOTO       L__main49
-;16F676MPPT.mpas,224 :: 		if power_curr = power_prev then begin
+	GOTO       L__main52
+;16F676MPPT.mpas,226 :: 		if power_curr = power_prev then begin
 	MOVF       _power_curr+3, 0
 	XORWF      _power_prev+3, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main73
+	GOTO       L__main77
 	MOVF       _power_curr+2, 0
 	XORWF      _power_prev+2, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main73
+	GOTO       L__main77
 	MOVF       _power_curr+1, 0
 	XORWF      _power_prev+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main73
+	GOTO       L__main77
 	MOVF       _power_curr+0, 0
 	XORWF      _power_prev+0, 0
-L__main73:
+L__main77:
 	BTFSS      STATUS+0, 2
-	GOTO       L__main52
-;16F676MPPT.mpas,225 :: 		LED1_tm:=250;
+	GOTO       L__main55
+;16F676MPPT.mpas,227 :: 		LED1_tm:=250;
 	MOVLW      250
 	MOVWF      _LED1_tm+0
-;16F676MPPT.mpas,226 :: 		goto CONTLOOP;
+;16F676MPPT.mpas,228 :: 		goto CONTLOOP;
 	GOTO       L__main_CONTLOOP
-;16F676MPPT.mpas,227 :: 		end else if power_curr < power_prev then begin
-L__main52:
+;16F676MPPT.mpas,229 :: 		end else if power_curr < power_prev then begin
+L__main55:
 	MOVF       _power_prev+3, 0
 	SUBWF      _power_curr+3, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main74
+	GOTO       L__main78
 	MOVF       _power_prev+2, 0
 	SUBWF      _power_curr+2, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main74
+	GOTO       L__main78
 	MOVF       _power_prev+1, 0
 	SUBWF      _power_curr+1, 0
 	BTFSS      STATUS+0, 2
-	GOTO       L__main74
+	GOTO       L__main78
 	MOVF       _power_prev+0, 0
 	SUBWF      _power_curr+0, 0
-L__main74:
+L__main78:
 	BTFSC      STATUS+0, 0
-	GOTO       L__main55
-;16F676MPPT.mpas,228 :: 		LED1_tm:=150;
+	GOTO       L__main58
+;16F676MPPT.mpas,230 :: 		LED1_tm:=150;
 	MOVLW      150
 	MOVWF      _LED1_tm+0
-;16F676MPPT.mpas,229 :: 		flag_inc:=not flag_inc;
+;16F676MPPT.mpas,231 :: 		flag_inc:=not flag_inc;
 	COMF       _flag_inc+0, 1
-;16F676MPPT.mpas,230 :: 		end else
-	GOTO       L__main56
-L__main55:
-;16F676MPPT.mpas,231 :: 		LED1_tm:=200;
+;16F676MPPT.mpas,232 :: 		end else
+	GOTO       L__main59
+L__main58:
+;16F676MPPT.mpas,233 :: 		LED1_tm:=200;
 	MOVLW      200
 	MOVWF      _LED1_tm+0
-L__main56:
-;16F676MPPT.mpas,237 :: 		end else begin
-	GOTO       L__main50
-L__main49:
-;16F676MPPT.mpas,238 :: 		LED1_tm:=100;
+L__main59:
+;16F676MPPT.mpas,239 :: 		end else begin
+	GOTO       L__main53
+L__main52:
+;16F676MPPT.mpas,240 :: 		LED1_tm:=100;
 	MOVLW      100
 	MOVWF      _LED1_tm+0
-;16F676MPPT.mpas,239 :: 		VOLPWM:=PWM_MID;
+;16F676MPPT.mpas,241 :: 		VOLPWM:=PWM_MID;
 	MOVLW      110
 	MOVWF      _VOLPWM+0
-;16F676MPPT.mpas,240 :: 		flag_inc:=false;
+;16F676MPPT.mpas,242 :: 		flag_inc:=false;
 	CLRF       _flag_inc+0
-;16F676MPPT.mpas,241 :: 		power_curr:=0;
+;16F676MPPT.mpas,243 :: 		power_curr:=0;
 	CLRF       _power_curr+0
 	CLRF       _power_curr+1
 	CLRF       _power_curr+2
 	CLRF       _power_curr+3
-;16F676MPPT.mpas,242 :: 		adc_cur:=0;
+;16F676MPPT.mpas,244 :: 		adc_cur:=0;
 	CLRF       _adc_cur+0
 	CLRF       _adc_cur+1
-;16F676MPPT.mpas,243 :: 		goto CONTLOOP;
+;16F676MPPT.mpas,245 :: 		goto CONTLOOP;
 	GOTO       L__main_CONTLOOP
-;16F676MPPT.mpas,244 :: 		end;
-L__main50:
-;16F676MPPT.mpas,247 :: 		if flag_inc then begin
+;16F676MPPT.mpas,246 :: 		end;
+L__main53:
+;16F676MPPT.mpas,249 :: 		if flag_inc then begin
 	MOVF       _flag_inc+0, 0
 	BTFSC      STATUS+0, 2
-	GOTO       L__main58
-;16F676MPPT.mpas,248 :: 		if VOLPWM<PWM_MAX then
+	GOTO       L__main61
+;16F676MPPT.mpas,250 :: 		if VOLPWM<PWM_MAX then
 	MOVLW      230
 	SUBWF      _VOLPWM+0, 0
 	BTFSC      STATUS+0, 0
-	GOTO       L__main61
-;16F676MPPT.mpas,249 :: 		Inc(VOLPWM)
+	GOTO       L__main64
+;16F676MPPT.mpas,251 :: 		Inc(VOLPWM)
 	INCF       _VOLPWM+0, 1
-	GOTO       L__main62
-;16F676MPPT.mpas,250 :: 		else begin
-L__main61:
-;16F676MPPT.mpas,251 :: 		VOLPWM:=PWM_MAX;
+	GOTO       L__main65
+;16F676MPPT.mpas,252 :: 		else begin
+L__main64:
+;16F676MPPT.mpas,253 :: 		VOLPWM:=PWM_MAX;
 	MOVLW      230
 	MOVWF      _VOLPWM+0
-;16F676MPPT.mpas,252 :: 		flag_inc:=false;
+;16F676MPPT.mpas,254 :: 		flag_inc:=false;
 	CLRF       _flag_inc+0
-;16F676MPPT.mpas,253 :: 		end;
-L__main62:
-;16F676MPPT.mpas,254 :: 		end else begin
-	GOTO       L__main59
-L__main58:
-;16F676MPPT.mpas,255 :: 		if VOLPWM>PWM_MIN then
+;16F676MPPT.mpas,255 :: 		end;
+L__main65:
+;16F676MPPT.mpas,256 :: 		end else begin
+	GOTO       L__main62
+L__main61:
+;16F676MPPT.mpas,257 :: 		if VOLPWM>PWM_MIN then
 	MOVF       _VOLPWM+0, 0
 	SUBLW      1
 	BTFSC      STATUS+0, 0
-	GOTO       L__main64
-;16F676MPPT.mpas,256 :: 		Dec(VOLPWM)
+	GOTO       L__main67
+;16F676MPPT.mpas,258 :: 		Dec(VOLPWM)
 	DECF       _VOLPWM+0, 1
-	GOTO       L__main65
-;16F676MPPT.mpas,257 :: 		else begin
-L__main64:
-;16F676MPPT.mpas,258 :: 		VOLPWM:=PWM_MIN;
+	GOTO       L__main68
+;16F676MPPT.mpas,259 :: 		else begin
+L__main67:
+;16F676MPPT.mpas,260 :: 		VOLPWM:=PWM_MIN;
 	MOVLW      1
 	MOVWF      _VOLPWM+0
-;16F676MPPT.mpas,259 :: 		flag_inc:=true;
+;16F676MPPT.mpas,261 :: 		flag_inc:=true;
 	MOVLW      255
 	MOVWF      _flag_inc+0
-;16F676MPPT.mpas,260 :: 		end;
-L__main65:
-;16F676MPPT.mpas,261 :: 		end;
-L__main59:
-;16F676MPPT.mpas,262 :: 		CONTLOOP:
+;16F676MPPT.mpas,262 :: 		end;
+L__main68:
+;16F676MPPT.mpas,263 :: 		end;
+L__main62:
+;16F676MPPT.mpas,264 :: 		CONTLOOP:
 L__main_CONTLOOP:
-;16F676MPPT.mpas,264 :: 		end;
+;16F676MPPT.mpas,266 :: 		end;
 	GOTO       L__main22
-;16F676MPPT.mpas,265 :: 		end.
+;16F676MPPT.mpas,267 :: 		end.
 L_end_main:
 	GOTO       $+0
 ; end of _main
