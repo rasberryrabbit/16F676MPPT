@@ -1150,5 +1150,5 @@ Wire Wire Line
 Wire Wire Line
 	6850 3050 7700 3050
 Text Notes 1450 6350 0    60   ~ 0
-C6 - optinal
+C6 - It is bad for power calculation. Remove it.
 $EndSCHEMATC
