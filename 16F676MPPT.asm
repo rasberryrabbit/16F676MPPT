@@ -416,7 +416,7 @@ L__main38:
 	SUBWF      R1+1, 0
 	BTFSS      STATUS+0, 2
 	GOTO       L__main74
-	MOVLW      25
+	MOVLW      15
 	SUBWF      R1+0, 0
 L__main74:
 	BTFSC      STATUS+0, 0
