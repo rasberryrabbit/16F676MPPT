@@ -6,8 +6,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2018-11-29"
-Rev "1.5"
+Date "2018-12-17"
+Rev "1.6"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -367,17 +367,6 @@ F 3 "" H 6350 4900 60  0000 C CNN
 	1    6350 4900
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:CP C6
-U 1 1 55D02AF9
-P 5450 5150
-F 0 "C6" H 5350 5400 50  0000 L CNN
-F 1 "10u" H 5250 5300 50  0000 L CNN
-F 2 "Capacitors_THT:CP_Radial_D12.5mm_P5.00mm" H 5488 5000 30  0001 C CNN
-F 3 "" H 5450 5150 60  0000 C CNN
-	1    5450 5150
-	1    0    0    -1  
-$EndComp
 Text Label 8800 6000 0    60   ~ 0
 3.6v
 $Comp
@@ -665,21 +654,13 @@ Wire Wire Line
 Wire Wire Line
 	8400 6100 8400 4450
 Wire Wire Line
-	5450 5600 5450 5300
-Connection ~ 5450 5600
-Wire Wire Line
 	1750 3500 1750 4400
 Wire Wire Line
 	1750 4400 4300 4400
 Wire Wire Line
-	4600 4400 5450 4400
-Wire Wire Line
 	5650 4400 5650 3700
 Wire Wire Line
 	5650 3700 5350 3700
-Wire Wire Line
-	5450 5000 5450 4400
-Connection ~ 5450 4400
 Wire Wire Line
 	5900 4500 5750 4500
 Wire Wire Line
@@ -1097,13 +1078,7 @@ Wire Wire Line
 Wire Wire Line
 	8650 3950 8650 5200
 Wire Wire Line
-	5900 5600 5450 5600
-Wire Wire Line
 	6350 5600 6100 5600
-Wire Wire Line
-	5450 5600 4100 5600
-Wire Wire Line
-	5450 4400 5650 4400
 Wire Wire Line
 	5900 4500 5900 4650
 Wire Wire Line
@@ -1149,6 +1124,8 @@ Wire Wire Line
 	6350 3600 9100 3600
 Wire Wire Line
 	6850 3050 7700 3050
-Text Notes 1450 6350 0    60   ~ 0
-C6 - It is bad for power calculation. Remove it.
+Wire Wire Line
+	4600 4400 5650 4400
+Wire Wire Line
+	4100 5600 5900 5600
 $EndSCHEMATC
