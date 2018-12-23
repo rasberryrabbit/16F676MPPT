@@ -1012,7 +1012,7 @@ Wire Wire Line
 Connection ~ 8250 4850
 Connection ~ 9200 4850
 Text Notes 9100 3850 0    60   ~ 0
-x47(50, 6A)
+x20(6A)
 Wire Wire Line
 	2300 4100 2750 4100
 Wire Wire Line
@@ -1128,4 +1128,6 @@ Wire Wire Line
 	4600 4400 5650 4400
 Wire Wire Line
 	4100 5600 5900 5600
+Text Notes 10100 4300 0    60   ~ 0
+R15\n6A = 2.2k, 3A = 4.7k
 $EndSCHEMATC
