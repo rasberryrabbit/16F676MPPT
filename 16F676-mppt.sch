@@ -6,8 +6,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2018-12-17"
-Rev "1.6"
+Date "2018-12-26"
+Rev "1.8"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -612,8 +612,6 @@ Wire Notes Line
 	6150 5850 10050 5850
 Wire Wire Line
 	5450 3600 6350 3600
-Wire Wire Line
-	1500 4200 1500 5600
 Connection ~ 1500 5600
 Wire Wire Line
 	6950 3950 6950 4750
@@ -1042,7 +1040,7 @@ Wire Wire Line
 Wire Wire Line
 	1900 2200 2400 2200
 Wire Wire Line
-	2300 5600 1500 5600
+	2300 5600 1750 5600
 Wire Wire Line
 	1500 2200 1900 2200
 Wire Wire Line
@@ -1130,4 +1128,48 @@ Wire Wire Line
 	4100 5600 5900 5600
 Text Notes 10100 4300 0    60   ~ 0
 R15\n6A = 2.2k, 3A = 4.7k
+$Comp
+L Device:Q_NPN_EBC Q6
+U 1 1 5C242C61
+P 1850 4800
+F 0 "Q6" H 2150 4700 50  0000 R CNN
+F 1 "2N2222A" H 2350 4850 50  0000 R CNN
+F 2 "TO_SOT_Packages_THT:TO-92_Inline_Wide" H 2050 4900 29  0001 C CNN
+F 3 "" H 1850 4800 60  0000 C CNN
+	1    1850 4800
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:Q_NPN_EBC Q7
+U 1 1 5C242D25
+P 1850 5300
+F 0 "Q7" H 2150 5200 50  0000 R CNN
+F 1 "2N2222A" H 2350 5350 50  0000 R CNN
+F 2 "TO_SOT_Packages_THT:TO-92_Inline_Wide" H 2050 5400 29  0001 C CNN
+F 3 "" H 1850 5300 60  0000 C CNN
+	1    1850 5300
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	1500 4200 1500 5600
+Wire Wire Line
+	1750 5000 1750 5050
+Wire Wire Line
+	1750 4400 1750 4600
+Connection ~ 1750 4400
+Wire Wire Line
+	2050 4800 2050 5050
+Wire Wire Line
+	2050 5050 1750 5050
+Connection ~ 2050 5050
+Wire Wire Line
+	2050 5050 2050 5300
+Connection ~ 1750 5050
+Wire Wire Line
+	1750 5050 1750 5100
+Wire Wire Line
+	1750 5500 1750 5600
+Connection ~ 1750 5600
+Wire Wire Line
+	1750 5600 1500 5600
 $EndSCHEMATC
