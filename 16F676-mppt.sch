@@ -6,8 +6,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2018-12-26"
-Rev "1.8"
+Date "2019-02-13"
+Rev "1.81"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -562,7 +562,7 @@ Wire Wire Line
 	6850 2350 6850 2600
 Connection ~ 6100 2350
 Wire Wire Line
-	3150 2350 5450 2350
+	3150 2350 5350 2350
 Wire Wire Line
 	6500 2700 6550 2700
 Connection ~ 6550 2800
@@ -1172,4 +1172,27 @@ Wire Wire Line
 Connection ~ 1750 5600
 Wire Wire Line
 	1750 5600 1500 5600
+$Comp
+L Device:R R11
+U 1 1 5C644B4D
+P 5350 2750
+F 0 "R11" V 5430 2750 50  0000 C CNN
+F 1 "10k" V 5350 2750 50  0000 C CNN
+F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 5280 2750 30  0001 C CNN
+F 3 "" H 5350 2750 30  0000 C CNN
+	1    5350 2750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5350 2900 5350 3100
+Wire Wire Line
+	5350 3100 5550 3100
+Wire Wire Line
+	5550 3100 5550 3400
+Connection ~ 5550 3400
+Wire Wire Line
+	5350 2600 5350 2350
+Connection ~ 5350 2350
+Wire Wire Line
+	5350 2350 5450 2350
 $EndSCHEMATC
