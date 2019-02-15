@@ -6,8 +6,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2019-02-13"
-Rev "1.81"
+Date "2019-02-15"
+Rev "1.82"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -385,7 +385,7 @@ L Device:R R1
 U 1 1 56E67518
 P 9450 4850
 F 0 "R1" V 9530 4850 50  0000 C CNN
-F 1 "2.2k" V 9450 4850 50  0000 C CNN
+F 1 "10k" V 9450 4850 50  0000 C CNN
 F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 9380 4850 50  0001 C CNN
 F 3 "" H 9450 4850 50  0000 C CNN
 	1    9450 4850
@@ -396,7 +396,7 @@ L Device:R R15
 U 1 1 56E68956
 P 9900 4300
 F 0 "R15" V 9980 4300 50  0000 C CNN
-F 1 "2.2k" V 9900 4300 50  0000 C CNN
+F 1 "3.3k" V 9900 4300 50  0000 C CNN
 F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 9830 4300 50  0001 C CNN
 F 3 "" H 9900 4300 50  0000 C CNN
 	1    9900 4300
@@ -1127,7 +1127,7 @@ Wire Wire Line
 Wire Wire Line
 	4100 5600 5900 5600
 Text Notes 10100 4300 0    60   ~ 0
-R15\n6A = 2.2k, 3A = 4.7k
+R15 3A = 4.7k
 $Comp
 L Device:Q_NPN_EBC Q6
 U 1 1 5C242C61
