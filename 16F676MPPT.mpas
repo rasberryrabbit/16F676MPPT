@@ -41,7 +41,7 @@ const
 {$ifdef USE_8MHZ}
    adc_max_loop = 5;     // 4
 {$else}
-   adc_max_loop = 10;     // 8
+   adc_max_loop = 5;     // 8
 {$endif}
    
 label
