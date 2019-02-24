@@ -30,7 +30,7 @@ L Device:R R4
 U 1 1 55C33F64
 P 7300 4250
 F 0 "R4" V 7380 4250 50  0000 C CNN
-F 1 "100k" V 7300 4250 50  0000 C CNN
+F 1 "47k" V 7300 4250 50  0000 C CNN
 F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 7230 4250 30  0001 C CNN
 F 3 "" H 7300 4250 30  0000 C CNN
 	1    7300 4250
@@ -302,7 +302,7 @@ L Device:R R2
 U 1 1 55CA080E
 P 6950 5300
 F 0 "R2" V 7030 5300 50  0000 C CNN
-F 1 "100k" V 6950 5300 50  0000 C CNN
+F 1 "47k" V 6950 5300 50  0000 C CNN
 F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 6880 5300 30  0001 C CNN
 F 3 "" H 6950 5300 30  0000 C CNN
 	1    6950 5300
@@ -1010,7 +1010,7 @@ Wire Wire Line
 Connection ~ 8250 4850
 Connection ~ 9200 4850
 Text Notes 9100 3850 0    60   ~ 0
-x20(6A)
+13.3(6A)
 Wire Wire Line
 	2300 4100 2750 4100
 Wire Wire Line
@@ -1127,7 +1127,7 @@ Wire Wire Line
 Wire Wire Line
 	4100 5600 5900 5600
 Text Notes 10100 4300 0    60   ~ 0
-R15 3A = 4.7k
+3A, R2 = R4 = 100k
 $Comp
 L Device:Q_NPN_EBC Q6
 U 1 1 5C242C61
