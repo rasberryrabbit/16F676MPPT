@@ -24,6 +24,7 @@ program _16F676MPPT;
 {$define USE_EEPROM_LM358DIFF}
 {$define Write_OPAMP_DIFF}
 {.$define USE_8MHZ}
+{.$define USE_48}
 
 const
    PWM_MAX = 250;
@@ -33,7 +34,11 @@ const
    TMR1L_LOAD=$30;
    TMR1H_LOAD=$F8;           // 2ms, 65536 - 2000
 
+{$ifdef USE_48}
+   VOLMUL = 48 div 6;        // 48V(1024) : 6A(1024), don't exceed 8
+{$else}
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
+{$endif}
    _UPDATE_INT = 30 div 2;   // consider 90ms
    _PWM_CHECK = 4500 div 2;
 

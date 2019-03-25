@@ -1195,4 +1195,24 @@ Wire Wire Line
 Connection ~ 5350 2350
 Wire Wire Line
 	5350 2350 5450 2350
+Text Notes 550  3950 0    60   ~ 0
+48V -> R12 = 22k
+Wire Notes Line
+	500  3800 500  4400
+Wire Notes Line
+	500  4400 1600 4400
+Wire Notes Line
+	1600 4400 1600 4250
+Wire Notes Line
+	1600 4250 2600 4250
+Wire Notes Line
+	2600 4250 2600 3200
+Wire Notes Line
+	2600 3200 1950 3200
+Wire Notes Line
+	1950 3200 1950 3800
+Wire Notes Line
+	1950 3800 500  3800
+Text Notes 550  4250 0    60   ~ 0
+U1 change for 48->5v Regulator
 $EndSCHEMATC
