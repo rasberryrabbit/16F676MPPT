@@ -5,8 +5,8 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title "Simple MPPT with 16F676 v1"
-Date "2019-02-15"
-Rev "1.82"
+Date "2021-07-30"
+Rev "1.83"
 Comp ""
 Comment1 ""
 Comment2 ""
@@ -177,17 +177,6 @@ F 2 "Resistors_THT:R_Axial_DIN0309_L9.0mm_D3.2mm_P12.70mm_Horizontal" V 5630 315
 F 3 "" H 5700 3150 30  0000 C CNN
 	1    5700 3150
 	1    0    0    -1  
-$EndComp
-$Comp
-L Device:D D3
-U 1 1 55C36E30
-P 5600 2350
-F 0 "D3" H 5600 2450 50  0000 C CNN
-F 1 "1N4148" H 5600 2250 50  0000 C CNN
-F 2 "Diodes_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 5600 2350 60  0001 C CNN
-F 3 "" H 5600 2350 60  0000 C CNN
-	1    5600 2350
-	-1   0    0    -1  
 $EndComp
 $Comp
 L Device:R R10
@@ -1089,8 +1078,6 @@ Wire Wire Line
 Wire Wire Line
 	9100 3600 9900 3600
 Wire Wire Line
-	2950 2200 5400 2200
-Wire Wire Line
 	2950 2200 2950 2600
 Wire Wire Line
 	3150 5000 3150 6100
@@ -1212,10 +1199,19 @@ Wire Notes Line
 Text Notes 550  4250 0    60   ~ 0
 U1 change for 48->5v Regulator
 Wire Wire Line
-	5450 2350 5400 2350
+	2950 2200 7500 2200
 Wire Wire Line
-	5400 2350 5400 2200
-Connection ~ 5400 2200
-Wire Wire Line
-	5400 2200 7500 2200
+	5350 2350 5450 2350
+Connection ~ 5350 2350
+$Comp
+L Device:D_Schottky D3
+U 1 1 61052925
+P 5600 2350
+F 0 "D3" H 5450 2300 50  0000 C CNN
+F 1 "1N5819" H 5600 2450 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal" H 5600 2350 50  0001 C CNN
+F 3 "~" H 5600 2350 50  0001 C CNN
+	1    5600 2350
+	-1   0    0    1   
+$EndComp
 $EndSCHEMATC
