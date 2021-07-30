@@ -28,7 +28,7 @@ program _16F676MPPT;
 
 const
    PWM_MAX = 250;
-   PWM_MIN = 12;
+   PWM_MIN = 10;
    PWM_MID = PWM_MAX div 2-5;
 
    TMR1L_LOAD=$30;

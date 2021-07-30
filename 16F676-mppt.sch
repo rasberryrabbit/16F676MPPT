@@ -277,7 +277,7 @@ F 3 "" H 2750 3700 60  0000 C CNN
 	1    2750 3700
 	1    0    0    -1  
 $EndComp
-Text Label 5000 2350 2    60   ~ 0
+Text Label 6600 2350 2    60   ~ 0
 BootStrap
 Text Label 7300 3600 2    60   ~ 0
 PV-Current
@@ -1089,7 +1089,7 @@ Wire Wire Line
 Wire Wire Line
 	9100 3600 9900 3600
 Wire Wire Line
-	2950 2200 7500 2200
+	2950 2200 5400 2200
 Wire Wire Line
 	2950 2200 2950 2600
 Wire Wire Line
@@ -1191,9 +1191,6 @@ Wire Wire Line
 Connection ~ 5550 3400
 Wire Wire Line
 	5350 2600 5350 2350
-Connection ~ 5350 2350
-Wire Wire Line
-	5350 2350 5450 2350
 Text Notes 550  3950 0    60   ~ 0
 48V -> R12 = 22k
 Wire Notes Line
@@ -1214,4 +1211,11 @@ Wire Notes Line
 	1950 3800 500  3800
 Text Notes 550  4250 0    60   ~ 0
 U1 change for 48->5v Regulator
+Wire Wire Line
+	5450 2350 5400 2350
+Wire Wire Line
+	5400 2350 5400 2200
+Connection ~ 5400 2200
+Wire Wire Line
+	5400 2200 7500 2200
 $EndSCHEMATC

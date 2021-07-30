@@ -217,7 +217,7 @@ L__main17:
 ;16F676MPPT.mpas,164 :: 		TMR1ON_bit:=1;
 	BSF        TMR1ON_bit+0, BitPos(TMR1ON_bit+0)
 ;16F676MPPT.mpas,166 :: 		VOLPWM:=PWM_MIN;
-	MOVLW      12
+	MOVLW      10
 	MOVWF      _VOLPWM+0
 ;16F676MPPT.mpas,167 :: 		flag_inc:=True;
 	MOVLW      255
@@ -532,7 +532,7 @@ L__main46:
 	MOVLW      100
 	MOVWF      _LED1_tm+0
 ;16F676MPPT.mpas,249 :: 		VOLPWM:=PWM_MIN;
-	MOVLW      12
+	MOVLW      10
 	MOVWF      _VOLPWM+0
 ;16F676MPPT.mpas,250 :: 		flag_inc:=True;
 	MOVLW      255
@@ -575,7 +575,7 @@ L__main59:
 L__main55:
 ;16F676MPPT.mpas,265 :: 		if VOLPWM>PWM_MIN then
 	MOVF       _VOLPWM+0, 0
-	SUBLW      12
+	SUBLW      10
 	BTFSC      STATUS+0, 0
 	GOTO       L__main61
 ;16F676MPPT.mpas,266 :: 		Dec(VOLPWM)
@@ -584,7 +584,7 @@ L__main55:
 ;16F676MPPT.mpas,267 :: 		else begin
 L__main61:
 ;16F676MPPT.mpas,268 :: 		VOLPWM:=PWM_MIN;
-	MOVLW      12
+	MOVLW      10
 	MOVWF      _VOLPWM+0
 ;16F676MPPT.mpas,269 :: 		flag_inc:=true;
 	MOVLW      255
