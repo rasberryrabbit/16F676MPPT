@@ -27,27 +27,25 @@ program _16F676MPPT;
 {.$define USE_48}
 
 const
-   PWM_MAX = 250;
+   PWM_MAX = 200;
+   PWM_START = PWM_MAX * 30 div 100;
+   TMR0BASE = 255-PWM_MAX;
    PWM_MIN = 10;
    PWM_MID = PWM_MAX div 2-5;
 
-   TMR1L_LOAD=$30;
-   TMR1H_LOAD=$F8;           // 2ms, 65536 - 2000
+   TMR1L_LOAD=$17;
+   TMR1H_LOAD=$FC;           // 1ms, 65535 - 1000
 
 {$ifdef USE_48}
    VOLMUL = 48 div 6;        // 48V(1024) : 6A(1024), don't exceed 8
 {$else}
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
 {$endif}
-   _UPDATE_INT = 30 div 2;   // consider 90ms
+   _UPDATE_INT = 25;         // 25ms
    _PWM_CHECK = 4500 div 2;
 
    cLM358_diff = 0;
-{$ifdef USE_8MHZ}
-   adc_max_loop = 5;     // 4
-{$else}
-   adc_max_loop = 5;     // 8
-{$endif}
+   adc_max_loop = 4;
    
 label
    CONTLOOP;
@@ -60,7 +58,7 @@ var
    TICK_1000 : word;
    doADCRead : byte;
 
-   LED1_tm : byte;
+   LED1_tm, wdtimer : word;
    prevtime, powertime, voltime : word;
    adc_vol, adc_cur, vol_prev1, vol_prev2 : word;
    power_prev, power_curr : dword;
@@ -79,7 +77,7 @@ begin
          TMR0:=255-ON_PWM;
        end else begin
          // off
-         TMR0:=255-PWM_MAX+ON_PWM;
+         TMR0:=TMR0BASE+ON_PWM;
        end;
        T0IF_bit:=0;
      end;
@@ -89,6 +87,14 @@ begin
        T1IF_bit:=0;
        Inc(TICK_1000);
      end;
+end;
+
+function tick_diff(a, b: word):word;
+begin
+  if a<b then
+    result:=a+(65535-b)+1
+    else
+      result:=a-b;
 end;
 
 begin
@@ -163,7 +169,7 @@ begin
 
      TMR1ON_bit:=1;
 
-     VOLPWM:=PWM_MIN;
+     VOLPWM:=PWM_START;
      flag_inc:=True;
      vol_prev1:=0;
      
@@ -178,13 +184,19 @@ begin
      delay_ms(300);
      LED1:=0;
      clrwdt;
+     wdtimer:=0;
 
      while True do begin
        // LED
        wtmp := TICK_1000;
-       if wtmp - prevtime > LED1_tm then begin
+       if tick_diff(wtmp, prevtime) > LED1_tm then begin
          prevtime := wtmp;
          LED1 := not LED1;
+       end;
+       
+       if tick_diff(wtmp, wdtimer) > 1000 then begin
+         wdtimer:=0;
+         clrwdt;
        end;
 
        // save previous adc values
@@ -197,21 +209,20 @@ begin
        // adc read
        adc_cur:=ADC_Read(0);
        adc_vol:=ADC_Read(2);
-       for i:=0 to adc_max_loop-2 do begin
+       for i:=1 to adc_max_loop-1 do begin
          xtmp:=ADC_Read(0);
          wtmp:=ADC_Read(2);
-         adc_vol:=(adc_vol+wtmp) div 2;
-         if xtmp > adc_cur then
+         if xtmp > adc_cur then begin
            adc_cur := xtmp;
-         //adc_cur:=(adc_cur+xtmp) div 2;
+           adc_vol := wtmp;
+         end;
        end;
        adc_vol:=adc_vol * VOLMUL;
 
        // check time
        wtmp:=TICK_1000;
-       if wtmp - powertime < _UPDATE_INT then
+       if tick_diff(wtmp, powertime) < _UPDATE_INT then
          goto CONTLOOP;
-       clrwdt;
        powertime:=wtmp;
 
        power_prev:= power_curr;
@@ -232,21 +243,21 @@ begin
        if adc_cur>LM358_diff then begin
          // power check
          if power_curr = power_prev then begin
-           LED1_tm:=250;
+           LED1_tm:=500;
            goto CONTLOOP;
          end else if power_curr < power_prev then begin
-           LED1_tm:=150;
+           LED1_tm:=300;
            flag_inc:=not flag_inc;
          end else
-           LED1_tm:=150;
+           LED1_tm:=300;
          {
          if (adc_vol+vol_prev2+1) div 2 < vol_prev1 then begin
            flag_inc:=true;
          end;
          }
        end else begin
-         LED1_tm:=100;
-         VOLPWM:=PWM_MIN;
+         LED1_tm:=200;
+         VOLPWM:=PWM_START;
          flag_inc:=True;
          power_curr:=0;
          adc_cur:=0;
