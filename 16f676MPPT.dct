@@ -16,6 +16,8 @@ __ps2_scroll
 __ps2_shift
 __savepclath
 __savestatus
+_adc_external_vrefh
+_adc_internal_vrefh
 _ch
 _command
 _lcd_blink_cursor_on
@@ -41,6 +43,7 @@ adc_cur
 adc_get_sample
 adc_get_sample_ptr
 adc_init
+adc_init_advanced
 adc_max_loop
 adc_read
 adc_vol
@@ -100,6 +103,7 @@ byte
 byte2double
 bytetohex
 bytetostr
+bytetostrwithzeros
 c
 c_bit
 cal0
@@ -206,6 +210,7 @@ false
 fixsign32
 flag_inc
 floattostr
+floattostr_fixlen
 floor
 freemem
 frexp
@@ -224,6 +229,12 @@ go_not_done
 go_not_done_bit
 half_pi
 halfbits
+hextobyte
+hextoint
+hextolong
+hextolongint
+hextoshort
+hextoword
 hh
 i
 ics_auto
@@ -367,6 +378,7 @@ peie_bit
 pi
 pie1
 pir1
+port_to_tris_offset
 porta
 portc
 pow
@@ -451,6 +463,7 @@ setiov3224
 short
 shorttohex
 shorttostr
+shorttostrwithzeros
 sin
 sine3
 sinh
@@ -473,6 +486,12 @@ sqrt
 srand
 ss
 status
+str_cut_chr
+str_cut_left
+str_cut_right
+str_insert_chr
+str_replace_chr
+str_split
 strappendpre
 strappendsuf
 strcat
@@ -490,7 +509,12 @@ strpbrk
 strrchr
 strspn
 strstr
+strtobyte
+strtofloat
 strtoint
+strtolong
+strtolongint
+strtoshort
 strtoword
 sub_32x32_fp
 swap
