@@ -46,7 +46,7 @@ const
 {$else}
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
 {$endif}
-   _UPDATE_INT = 25;         // 25ms
+   _UPDATE_INT = 40;         // 25ms+
    _PWM_CHECK = 4500 div 2;
 
    cLM358_diff = 0;
