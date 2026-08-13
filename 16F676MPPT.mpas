@@ -47,6 +47,7 @@ const
    VOLMUL = 25 div 6;        // 25V(1024) : 6A(1024), don't exceed 8
 {$endif}
    _UPDATE_INT = 40;         // 25ms+
+   _CHECK_P_LOW = 500 div _UPDATE_INT;
    _PWM_CHECK = 4500 div 2;
 
    cLM358_diff = 0;
@@ -59,7 +60,7 @@ var
    LED1 : sbit at RC4_bit;
    PWM_SIG : sbit at RC1_bit;
    Write_OPAMP : sbit at RC3_bit;
-   ON_PWM, VOLPWM : byte;
+   ON_PWM, VOLPWM, power_low : byte;
    TICK_1000 : word;
    doADCRead : byte;
 
@@ -122,6 +123,7 @@ begin
      ON_PWM:=0;
      VOLPWM:=0;
      TICK_1000:=0;
+     power_low:=0;
 
      OPTION_REG:=%11011111;        // ~4KHz @ 4MHz, 1000000 / 4 = 3.9k
      TMR0IE_bit:=1;
@@ -229,21 +231,26 @@ begin
          // power check
          if power_curr = power_prev then begin
            LED1_tm:=500;
+           power_low:=0;
            goto CONTLOOP;
          end else if power_curr < power_prev then begin
-           LED1_tm:=300;
-           if adc_cur<adc_cur_last then
+           LED1_tm:=150;
+           Inc(power_low);
+           if (power_low>=_CHECK_P_LOW) and (adc_cur<adc_cur_last) then
              flag_inc:=true
              else
              flag_inc:=not flag_inc;
-         end else
+         end else begin
            LED1_tm:=300;
+           power_low:=0;
+         end;
        end else begin
-         LED1_tm:=200;
+         LED1_tm:=150;
          VOLPWM:=PWM_START;
          flag_inc:=True;
          power_curr:=0;
          adc_cur:=0;
+         power_low:=0;
          goto CONTLOOP;
        end;
        
